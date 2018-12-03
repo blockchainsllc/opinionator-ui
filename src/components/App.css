@@ -22,6 +22,21 @@
   color: #61dafb;
 }
 
+.fix-footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  overflow:hidden;
+}
+
+.main-container {
+ min-height: 100vh; /* will cover the 100% of viewport */
+ overflow: hidden;
+ display: block;
+ position: relative;
+ padding-bottom: 100px; /* height of your footer */
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

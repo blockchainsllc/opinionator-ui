@@ -1,0 +1,12 @@
+.fix-footer {
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    bottom: 0;
+    overflow:hidden;
+    background-color: rgb(244, 244, 244);
+}
+
+.footer-text {
+    padding: 2rem 3rem 3rem;
+}
