@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { sendVote } from '../../interfaces/DatabaseInterface'
+import SinglePollProposalInfoModal from './SinglePollProposalInfoModal'
 import "../styles/SinglePollProposal.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPercentage, faGasPump, faCoins, faCogs, faCubes, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import { faPercentage, faGasPump, faCoins, faCogs, faCubes, faAngleUp, faAngleDown, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
 
 class SinglePollProposal extends Component {
 
@@ -12,12 +13,14 @@ class SinglePollProposal extends Component {
       expanded: false,
       inputAddress: '',
       inputSignature: '',
+      showSignatureModal: false,
     }
 
     this.handleAddressChange = this.handleAddressChange.bind(this)
     this.handleSignatureChange = this.handleSignatureChange.bind(this)
     this.handleClickOnProposalBox = this.handleClickOnProposalBox.bind(this)
     this.handleClickOnSendSignatureButton = this.handleClickOnSendSignatureButton.bind(this)
+    this.handleClickInfoButtonSignature = this.handleClickInfoButtonSignature.bind(this)
   }
 
   handleClickOnProposalBox() {
@@ -81,12 +84,19 @@ class SinglePollProposal extends Component {
     return returnValue
   }
 
+  handleClickInfoButtonSignature() {
+    this.setState({
+      showSignatureModal: !this.state.showSignatureModal
+    })
+  }
+
   render() {
 
     const loadingScreen = <div></div>
     const message = this.getMessage()
     return (
       <div>
+        {this.state.showSignatureModal ? < SinglePollProposalInfoModal handleClickInfoButtonSignature={this.handleClickInfoButtonSignature}/> : null}
         {!this.props.proposalData ? loadingScreen :
         <div className="box proposalBox-buttom-spacer" >
             <div className="columns">
@@ -145,8 +155,8 @@ class SinglePollProposal extends Component {
 
             <div className='field'>
                 <div className="control has-icon-left">
-                <label className="label">The message to vote on</label>
-                    <input className="input is-disabled" type='text' value={message} readOnly={true}/>
+                <label className="label">The message to vote on <FontAwesomeIcon icon={faQuestionCircle} onClick={this.handleClickInfoButtonSignature}/></label>
+                <input className="input is-disabled" type='text' value={message} readOnly={true}/>
                 </div>
             </div>
 
