@@ -67,7 +67,13 @@ class CreatePollForm extends Component {
       endDate = 0
     else
       endDate = this.state.inputEndDate
-    await createPoll(this.props.web3Interface, this.state.inputName, this.state.inputDescription, startDate, endDate, 0, this.state.inputYesNo)
+
+    try {
+      await createPoll(this.props.web3Interface, this.state.inputName, this.state.inputDescription, startDate, endDate, 0, this.state.inputYesNo)
+    } catch (error) {
+      alert("Something went wrong with your transaction\n" + error)
+    }
+
     this.setState({
       inputName: '',
       inputDescription: '',
@@ -118,7 +124,7 @@ class CreatePollForm extends Component {
 
             <div className="field is-grouped is-grouped-right">
             <div className="control is-grouped">
-                <button className="button is-link" onClick={this.handleButtonCreatePollClicked} type="button" disabled={this.state.buttonCreateActive}>
+                <button className={!this.state.buttonCreateActive ? "button is-link" : "button is-link is-loading"} onClick={this.handleButtonCreatePollClicked} type="button" disabled={this.state.buttonCreateActive}>
                     Create
                 </button>
                 </div>

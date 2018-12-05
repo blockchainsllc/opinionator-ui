@@ -19,22 +19,30 @@ class App extends Component {
       polls: [],
       web3Interface: new Web3Interface()
     };
+    this.getPolls = this.getPolls.bind(this)
   }
 
   async componentDidMount() {
     //TODO: I really dont like that here, should move it somewhere else
     const pollAmount = await getPollAmount(this.state.web3Interface)
-    let delay = 0;
+
     for (var i = 0; i < pollAmount; i++) {
-      setTimeout(async () => {
-        var pollObj = await getPoll(this.state.web3Interface, i - 1);
-        pollObj.votes = (await getAmountOfVotesForPoll(i - 1)).length;
-        this.setState({
-          polls: this.state.polls.concat(pollObj)
-        })
-      }, delay);
-      delay += 50;
+      this.sleep(this.getPolls, i)
     }
+  }
+
+  sleep(fn, par) {
+    return new Promise((resolve) => {
+      setTimeout(() => resolve(fn(par)), 50)
+    })
+  }
+
+  async getPolls(pollId) {
+    var pollObj = await getPoll(this.state.web3Interface, pollId);
+    pollObj.votes = (await getAmountOfVotesForPoll(pollId - 1)).length;
+    this.setState({
+      polls: this.state.polls.concat(pollObj)
+    })
   }
 
   render() {

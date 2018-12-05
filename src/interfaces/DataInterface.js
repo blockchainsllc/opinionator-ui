@@ -102,7 +102,7 @@ export async function createPoll(web3Interface, name, description, startDate, en
       from: accounts[0]
     })
   } catch (error) {
-    console.log("Metamask denied")
+    console.log("Metamask denied\n" + error)
   }
 }
 

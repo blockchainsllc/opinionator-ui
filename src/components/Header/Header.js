@@ -10,7 +10,11 @@ class Header extends Component {
   }
 
   async activateMetamaskAccounts() {
-    await this.props.web3Interface.initAccounts()
+    //TODO: That is so weird that its not kinda working. Need to test what is actually used (remote node or metamask)
+    if (!this.props.web3Interface.initialized)
+      await this.props.web3Interface.initAccounts()
+    else
+      alert("You already approved Metamask")
   }
 
   render() {
@@ -24,7 +28,7 @@ class Header extends Component {
               
                 <a className="navbar-item" href="/">Home</a>
                 <a className="navbar-item" href="/createPoll">Create</a>
-                <a className="navbar-item" href="/search">Search</a>
+                { /**<a className="navbar-item" href="/search">Search</a> */ }
 
             </div>
             <div className="navbar-end">

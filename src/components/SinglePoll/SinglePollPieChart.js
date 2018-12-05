@@ -44,7 +44,7 @@ class SinglePollPieChart extends React.Component {
   update(props) {
     this.setState(
       {
-        titles: props.proposalData.map((proposal) => proposal.title),
+        titles: props.proposalData.map((proposal) => proposal.name),
         data: props.proposalData.map((proposal) => proposal.percentage)
       }
       , () => this.buildPieChart());

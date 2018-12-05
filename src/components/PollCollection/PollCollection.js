@@ -7,28 +7,42 @@ class PollCollection extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = ({
+      maxPolls: []
+    })
+  }
 
-    };
+  componentDidMount() {
+    this.setState({
+      maxPolls: this.getTopPolls()
+    })
   }
 
   getTopPolls() {
-    let max1 = this.props.polls[0],
-      max2 = this.props.polls[0],
-      max3 = this.props.polls[0];
+    var max1 = 0,
+      max2 = 0,
+      max3 = 0,
+      pollMax1,
+      pollMax2,
+      pollMax3;
 
-    for (let i = 1, len = this.props.polls.length; i < len; i++) {
+    for (let i = 0, len = this.props.polls.length; i < len; i++) {
       let v = this.props.polls[i].votes;
 
-      if (v > max1.votes)
-        max1 = this.props.polls[i];
-      else if (v > max2.votes)
-        max2 = this.props.polls[i];
-      else if (v > max3.votes)
-        max3 = this.props.polls[i];
+      if (v > max1) {
+        max1 = v
+        pollMax1 = this.props.polls[i];
+      } else if (v > max2) {
+        max2 = v
+        pollMax2 = this.props.polls[i];
+      } else if (v > max3) {
+        max3 = v
+        pollMax3 = this.props.polls[i];
+      }
+
     }
 
-    return [max1, max2, max3];
+    return [pollMax1, pollMax2, pollMax3];
   }
 
   render() {
@@ -41,7 +55,10 @@ class PollCollection extends Component {
             <h1 className="title is-2 has-text-centered">Top Polls</h1>
 
             <div className="tile is-ancestor tile-flexwrap">
-                {maxPolls[0] !== undefined ? maxPolls.map((poll) => (<PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>)) : null}
+            { /** TODO: Have to think about that, at least it works for now */ }
+                {maxPolls[0] !== undefined ? maxPolls.filter((poll) => {
+        if (poll) return poll
+      }).map((poll) => ( <PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>)) : null}
             </div>
         </div>
 

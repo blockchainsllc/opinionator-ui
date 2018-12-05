@@ -10,17 +10,26 @@ export default class Web3Service {
     if (window['ethereum']) {
       this.web3 = new Web3(window['ethereum'])
     } else if (window['web3']) {
-      this.web3 = new Web3("https://tobalaba-rpc.slock.it")
+      this.web3 = new Web3(config.remoteProvider)
+    }
+
+    this.state = {
+      initialized: false
     }
 
     this.contract = new this.web3.eth.Contract(VotingContract, config.contractAddress)
     this.contractAddress = config.contractAddress
+
+    this.initAccounts = this.initAccounts.bind(this)
   }
 
   async initAccounts() {
     if (window['ethereum']) {
       try {
         await this.web3.enable()
+        this.setState({
+          initialized: true
+        })
       } catch (error) {}
     }
 
