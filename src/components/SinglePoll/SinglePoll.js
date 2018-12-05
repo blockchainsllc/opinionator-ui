@@ -3,6 +3,7 @@ import SinglePollProposal from './SinglePollProposal';
 import SinglePollPieChart from './SinglePollPieChart';
 import SinglePollSlider from './SinglePollSlider';
 import { getProposalData } from '../../interfaces/DataInterface';
+import SinglePollAdminFunctions from './SinglePollAdminFunctions';
 import '../styles/SinglePoll.css'
 
 class SinglePoll extends Component {
@@ -13,6 +14,7 @@ class SinglePoll extends Component {
       proposals: [],
       pageLoaded: false,
       activeMetamaskAccount: '',
+      showModal: false,
 
       coinSliderValue: 50,
       gasSliderValue: 50,
@@ -25,6 +27,7 @@ class SinglePoll extends Component {
       minerSum: 0
     }
     this.getProposalDataFromInterface = this.getProposalDataFromInterface.bind(this)
+    this.handleButtonAdminFunctionsOnClick = this.handleButtonAdminFunctionsOnClick.bind(this)
   }
 
   async componentDidMount() {
@@ -74,23 +77,28 @@ class SinglePoll extends Component {
     this.getProposalDataFromInterface(this.state.proposals);
   }
 
-  handleButtonAdminFunctionsOnClick() {}
+  handleButtonAdminFunctionsOnClick() {
+    this.setState({
+      showModal: !this.state.showModal
+    })
+  }
 
   render() {
     return (
       <div>
       {this.state.pageLoaded ? <section className="section">
         <div className="container has-gutter-top-bottom has-text-centered">
-            <div className="title">{this.props.poll ? this.props.poll.title : "Title"}</div>
-            <div className="subtitle">{this.props.poll ? this.props.poll.description : "Description"}</div>
-            <div>created by {this.props.poll ? this.props.poll.author : "Author"}</div> 
-            <div className="title is-4">{this.props.poll ? new Date(this.props.poll.startDate * 1000).toLocaleDateString() : "startDate"}  -  {this.props.poll ? new Date(this.props.poll.endDate * 1000).toLocaleDateString() : "endDate"}</div>
-            <div className="title is-5">{this.props.poll ? this.props.poll.votes : 0} Votes</div>
+            <div className="title">{this.props.poll.title}</div>
+            <div className="subtitle">{this.props.poll.description}</div>
+            <div>created by {this.props.poll.author}</div> 
+            <div className="title is-4">{new Date(this.props.poll.startDate * 1000).toLocaleDateString()}  -  {new Date(this.props.poll.endDate * 1000).toLocaleDateString()}</div>
+            <div className="title is-5">{this.props.poll.votes} Votes</div>
 
             {this.props.poll.author === this.state.activeMetamaskAccount && this.props.poll.endDate > Date.now() / 1000 ? <button className="button is-link" onClick={this.handleButtonAdminFunctionsOnClick}>Admin functions</button> : null}
+            {this.state.showModal ? <SinglePollAdminFunctions handleButtonAdminFunctionsOnClick={this.handleButtonAdminFunctionsOnClick} isStandardPoll={this.props.poll.standardPoll} web3Interface={this.props.web3Interface} pollId={this.props.poll.id} /> : null}
 
             <section className="section">
-            {this.state.proposals ? this.state.proposals.map((proposal) => <SinglePollProposal proposalData={proposal} key={proposal.name} pollId={this.props.poll.id} endDate={this.props.poll.endDate} pollContractAddress={this.props.web3Interface.contractAddress} web3Interface={this.props.web3Interface} />) : null}
+            {this.state.proposals.map((proposal) => <SinglePollProposal proposalData={proposal} key={proposal.name} pollId={this.props.poll.id} endDate={this.props.poll.endDate} pollContractAddress={this.props.web3Interface.contractAddress} web3Interface={this.props.web3Interface} />)}
             </section>
             <section className="section">
                 <div className="columns is-vcentered">

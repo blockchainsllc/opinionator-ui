@@ -105,3 +105,14 @@ export async function createPoll(web3Interface, name, description, startDate, en
     console.log("Metamask denied")
   }
 }
+
+export async function createProposal(web3Interface, name, description, pollId) {
+  let accounts = await web3Interface.web3.eth.getAccounts()
+  try {
+    await web3Interface.contract.methods.createProposal(name, description, pollId).send({
+      from: accounts[0]
+    })
+  } catch (error) {
+    alert("An Error occoured while sending the transaction!\n" + error)
+  }
+}

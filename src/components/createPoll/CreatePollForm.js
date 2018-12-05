@@ -10,7 +10,8 @@ class CreatePollForm extends Component {
       inputDescription: '',
       inputStartDate: '',
       inputEndDate: '',
-      inputYesNo: false
+      inputYesNo: false,
+      buttonCreateActive: false
     };
 
     this.handleInputName = this.handleInputName.bind(this);
@@ -52,6 +53,9 @@ class CreatePollForm extends Component {
   }
 
   async handleButtonCreatePollClicked() {
+    this.setState({
+      buttonCreateActive: true
+    })
     let startDate;
     if (this.state.inputStartDate === '')
       startDate = new Date()
@@ -64,6 +68,14 @@ class CreatePollForm extends Component {
     else
       endDate = this.state.inputEndDate
     await createPoll(this.props.web3Interface, this.state.inputName, this.state.inputDescription, startDate, endDate, 0, this.state.inputYesNo)
+    this.setState({
+      inputName: '',
+      inputDescription: '',
+      inputStartDate: '',
+      inputEndDate: '',
+      inputYesNo: false,
+      buttonCreateActive: false
+    })
   }
 
   render() {
@@ -106,7 +118,7 @@ class CreatePollForm extends Component {
 
             <div className="field is-grouped is-grouped-right">
             <div className="control is-grouped">
-                <button className="button is-link" onClick={this.handleButtonCreatePollClicked} type="button">
+                <button className="button is-link" onClick={this.handleButtonCreatePollClicked} type="button" disabled={this.state.buttonCreateActive}>
                     Create
                 </button>
                 </div>
