@@ -22,7 +22,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
-
+    //TODO: I really dont like that here, should move it somewhere else
     const pollAmount = await getPollAmount(this.state.web3Interface)
     let delay = 0;
     for (var i = 0; i < pollAmount; i++) {
@@ -44,7 +44,7 @@ class App extends Component {
         <BrowserRouter>
           <div>
             <Route exact path="/" render={() => <PollCollection polls={this.state.polls}/>}/>
-            <Route exact path="/createPoll" component={CreatePoll} />
+            <Route exact path="/createPoll" render={() => <CreatePoll web3Interface={this.state.web3Interface}/>}/>
             <Route exact path="/collection/:id" component={(props) => <SinglePoll poll={this.state.polls.find(poll => poll.id === parseInt(props.match.params.id))} web3Interface={this.state.web3Interface}/>} />
             <Route exact path="/search" component={Search} />
           </div>

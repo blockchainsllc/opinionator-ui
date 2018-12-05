@@ -14,6 +14,7 @@ export default class Web3Service {
     }
 
     this.contract = new this.web3.eth.Contract(VotingContract, config.contractAddress)
+    this.contractAddress = config.contractAddress
   }
 
   async initAccounts() {

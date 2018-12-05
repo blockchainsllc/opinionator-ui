@@ -5,6 +5,8 @@ class Header extends Component {
 
   constructor(props) {
     super(props);
+
+    this.activateMetamaskAccounts = this.activateMetamaskAccounts.bind(this)
   }
 
   async activateMetamaskAccounts() {
@@ -26,7 +28,7 @@ class Header extends Component {
 
             </div>
             <div className="navbar-end">
-                <a className="navbar-item" onClick={this.activateMetamaskAccounts} >Metamask</a>
+                <a className="navbar-item" onClick={this.activateMetamaskAccounts}>Metamask</a>
             </div>
           </div>
         </nav>

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { sendVote } from '../../interfaces/DatabaseInterface'
 import "../styles/SinglePollProposal.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPercentage, faGasPump, faCoins, faCogs, faCubes, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
@@ -8,9 +9,13 @@ class SinglePollProposal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      expanded: false
+      expanded: false,
+      inputAddress: '',
+      inputSignature: '',
     }
 
+    this.handleAddressChange = this.handleAddressChange.bind(this)
+    this.handleSignatureChange = this.handleSignatureChange.bind(this)
     this.handleClickOnProposalBox = this.handleClickOnProposalBox.bind(this)
     this.handleClickOnSendSignatureButton = this.handleClickOnSendSignatureButton.bind(this)
   }
@@ -21,15 +26,60 @@ class SinglePollProposal extends Component {
     });
   }
 
+  handleSignatureChange(event) {
+    this.setState({
+      inputSignature: event.target.value
+    }, this.checkSignature)
+  }
+
+  handleAddressChange(event) {
+    this.setState({
+      inputAddress: event.target.value
+    })
+  }
+
   getMessage() {
     return JSON.stringify({
-      pollContractAddress: "0x0",
+      pollContractAddress: this.props.pollContractAddress,
       poll_id: this.props.pollId,
       proposal_id: this.props.proposalData.id
     })
   }
 
-  handleClickOnSendSignatureButton() {}
+  async handleClickOnSendSignatureButton() {
+    let signatureMatches = await this.checkSignature()
+    if (signatureMatches) {
+      try {
+        await sendVote({
+          message: this.getMessage(),
+          version: '0.1',
+          signature: this.state.inputSignature
+        })
+        alert("Thank you for participating")
+        this.setState({
+          inputAddress: '',
+          inputSignature: ''
+        })
+      } catch (error) {
+        //show notification
+        alert("Error: You already participated. Please try another address\n" + error)
+      }
+    } else {
+      //show notification
+      alert("Error: Signature does not match")
+    }
+  }
+
+  async checkSignature() {
+    let returnValue = false
+    try {
+      returnValue = await this.props.web3Interface.web3.eth.accounts.recover(this.getMessage(), this.state.inputSignature).toLowerCase() === this.state.inputAddress
+    } catch (error) {
+      //show notification
+      alert("Error: " + error)
+    }
+    return returnValue
+  }
 
   render() {
 
@@ -62,7 +112,8 @@ class SinglePollProposal extends Component {
                 </div>
                 <div className="column">
                     <FontAwesomeIcon icon={faCoins} /> 
-                    {this.props.proposalData.coin}
+            { /**slice the last 18 digits to get eth instead of wei (not nice but simple enough (calculation is still accurate, only for display))*/ }
+                    {this.props.proposalData.coin.slice(0, -18)}
                 </div>
                 <div className="column">
                     <FontAwesomeIcon icon={faCogs} /> 
@@ -88,7 +139,7 @@ class SinglePollProposal extends Component {
             <div className='field'>
                 <div className="control has-icon-left">
                 <label className="label">Your Address</label>
-                    <input className="input" type='text' placeholder='Enter your address' required/>
+                    <input className="input" type='text' placeholder='Enter your address' onChange={this.handleAddressChange} value={this.state.inputAddress} required/>
                 </div>
             </div>
 
@@ -102,7 +153,7 @@ class SinglePollProposal extends Component {
             <div className='field'>
                 <div className="control has-icon-left">
                 <label className="label">Paste signature here</label>
-                    <input className="input proposalBox-buttom-spacer" type='text' placeholder='Enter your Signature' required/>
+                    <input className="input proposalBox-buttom-spacer" type='text' placeholder='Enter your Signature' onChange={this.handleSignatureChange} value={this.state.inputSignature} required/>
                 </div>
             </div>
 

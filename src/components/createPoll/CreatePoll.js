@@ -8,7 +8,7 @@ class CreatePoll extends Component {
             <div className="container">
               <div className="columns is-centered">
                 <div className="column is-5-tablet is-6-desktop is-7-widescreen">
-                  <CreatePollForm/>
+                  <CreatePollForm web3Interface={this.props.web3Interface}/>
                 </div>
               </div>
             </div>

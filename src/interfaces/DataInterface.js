@@ -1,4 +1,4 @@
-import { getGasForProposal, getMinerForProposal, getDevForProposal, getAmountOfVotesForPoll } from './DatabaseInterface.js'
+import { getGasForProposal, getMinerForProposal, getDevForProposal } from './DatabaseInterface.js'
 import { BigNumber } from 'bignumber.js';
 
 export async function getProposalData(web3Interface, proposalIds, coinWeight, gasWeight, developerWeight, minerWeight, proposals) {
@@ -8,6 +8,7 @@ export async function getProposalData(web3Interface, proposalIds, coinWeight, ga
       let tempProposal = await getProposal(web3Interface, proposalIds[i])
       let gasAndCoinSum = await getGasForProposal(tempProposal.pollId, proposalIds[i])
       let proposal = {
+        id: proposalIds[i],
         name: tempProposal.name,
         description: tempProposal.description,
         author: tempProposal.author,
@@ -20,14 +21,14 @@ export async function getProposalData(web3Interface, proposalIds, coinWeight, ga
       }
       proposals.push(proposal)
     }
+  } else {
+    proposals.map((proposal) => {
+      proposal.gas = new BigNumber(proposal.gas);
+      proposal.coin = new BigNumber(proposal.coin);
+      proposal.dev = new BigNumber(proposal.dev);
+      proposal.miner = new BigNumber(proposal.miner);
+    })
   }
-
-  proposals.map((proposal) => {
-    proposal.gas = new BigNumber(proposal.gas);
-    proposal.coin = new BigNumber(proposal.coin);
-    proposal.dev = new BigNumber(proposal.dev);
-    proposal.miner = new BigNumber(proposal.miner);
-  })
 
   const coinSum = new BigNumber(proposals.map((proposal) => proposal.coin).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
   const gasSum = new BigNumber(proposals.map((proposal) => proposal.gas).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
@@ -39,8 +40,7 @@ export async function getProposalData(web3Interface, proposalIds, coinWeight, ga
 
     //parse values to readable strings
     proposal.gas = proposal.gas.toString()
-    //slice the last 18 digits to get eth instead of wei (not nice but simple enough (calculation is still accurate, only for display))
-    proposal.coin = proposal.coin.toString().slice(0, -18)
+    proposal.coin = proposal.coin.toString()
     proposal.dev = proposal.dev.toString()
     proposal.miner = proposal.miner.toString()
   })
@@ -91,4 +91,17 @@ export async function getPoll(web3Interface, pollId) {
     votingChoice: tempPoll.votingChoice
   }
   return poll
+}
+
+export async function createPoll(web3Interface, name, description, startDate, endDate, votingChoice, standardPoll) {
+  startDate = new Date(startDate).getTime() / 1000
+  endDate = new Date(endDate).getTime() / 1000
+  let accounts = await web3Interface.web3.eth.getAccounts()
+  try {
+    await web3Interface.contract.methods.createPoll(name, description, startDate, endDate, votingChoice, standardPoll).send({
+      from: accounts[0]
+    })
+  } catch (error) {
+    console.log("Metamask denied")
+  }
 }

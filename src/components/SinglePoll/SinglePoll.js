@@ -12,6 +12,7 @@ class SinglePoll extends Component {
       poll: null,
       proposals: [],
       pageLoaded: false,
+      activeMetamaskAccount: '',
 
       coinSliderValue: 50,
       gasSliderValue: 50,
@@ -30,6 +31,10 @@ class SinglePoll extends Component {
 
     if (this.props.poll && this.props.web3Interface) {
       await this.getProposalDataFromInterface(null);
+      let accounts = await this.props.web3Interface.web3.eth.getAccounts()
+      this.setState({
+        activeMetamaskAccount: accounts[0]
+      })
     }
   }
 
@@ -69,6 +74,8 @@ class SinglePoll extends Component {
     this.getProposalDataFromInterface(this.state.proposals);
   }
 
+  handleButtonAdminFunctionsOnClick() {}
+
   render() {
     return (
       <div>
@@ -79,8 +86,11 @@ class SinglePoll extends Component {
             <div>created by {this.props.poll ? this.props.poll.author : "Author"}</div> 
             <div className="title is-4">{this.props.poll ? new Date(this.props.poll.startDate * 1000).toLocaleDateString() : "startDate"}  -  {this.props.poll ? new Date(this.props.poll.endDate * 1000).toLocaleDateString() : "endDate"}</div>
             <div className="title is-5">{this.props.poll ? this.props.poll.votes : 0} Votes</div>
+
+            {this.props.poll.author === this.state.activeMetamaskAccount && this.props.poll.endDate > Date.now() / 1000 ? <button className="button is-link" onClick={this.handleButtonAdminFunctionsOnClick}>Admin functions</button> : null}
+
             <section className="section">
-            {this.state.proposals ? this.state.proposals.map((proposal) => <SinglePollProposal proposalData={proposal} key={proposal.name} pollId={this.props.pollId} endDate={this.props.poll.endDate}/>) : null}
+            {this.state.proposals ? this.state.proposals.map((proposal) => <SinglePollProposal proposalData={proposal} key={proposal.name} pollId={this.props.poll.id} endDate={this.props.poll.endDate} pollContractAddress={this.props.web3Interface.contractAddress} web3Interface={this.props.web3Interface} />) : null}
             </section>
             <section className="section">
                 <div className="columns is-vcentered">
@@ -124,7 +134,17 @@ class SinglePoll extends Component {
                 </div>
             </section>
         </div>
-      </section> : <div>Loading</div>}
+      </section> : <section className="hero is-fullheight is-light">
+                <div className="hero-body">
+                    <div className="container">
+                        <div className="columns is-centered">
+                            <div className="column is-2">
+                            <div className="title">Loading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </section>}
       </div>
       );
   }
