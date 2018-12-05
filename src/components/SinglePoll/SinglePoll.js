@@ -34,6 +34,8 @@ class SinglePoll extends Component {
 
     if (this.props.poll && this.props.web3Interface) {
       await this.getProposalDataFromInterface(null);
+      //TODO: how to check high level if it is enabled without destroying UX
+      await this.props.web3Interface.initAccounts()
       let accounts = await this.props.web3Interface.web3.eth.getAccounts()
       this.setState({
         activeMetamaskAccount: accounts[0]

@@ -142,7 +142,7 @@ class SinglePollProposal extends Component {
             </div>
 
             { /** Form for signing */ }
-            {!this.state.expanded ? null :
+            {this.state.expanded && this.props.endDate > (Date.now() / 1000) ?
 
           <div className="section">
 
@@ -169,7 +169,7 @@ class SinglePollProposal extends Component {
 
             {<button className="button is-left is-link" onClick={this.handleClickOnSendSignatureButton}>Send Signature</button>}
 
-            </div>}
+            </div> : null}
         </div>
       }
       </div>
