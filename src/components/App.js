@@ -26,17 +26,20 @@ class App extends Component {
     //TODO: I really dont like that here, should move it somewhere else
     const pollAmount = await getPollAmount(this.state.web3Interface)
 
+    //gets one poll every 50ms to not spam the backend
     for (var i = 0; i < pollAmount; i++) {
       this.sleep(this.getPolls, i)
     }
   }
 
+  //allowes to call async functions after a certain time period
   sleep(fn, par) {
     return new Promise((resolve) => {
       setTimeout(() => resolve(fn(par)), 50)
     })
   }
 
+  //collects a poll and stores it in the state array for polls
   async getPolls(pollId) {
     var pollObj = await getPoll(this.state.web3Interface, pollId);
     pollObj.votes = (await getAmountOfVotesForPoll(pollId - 1)).length;

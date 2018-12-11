@@ -32,7 +32,7 @@ class SinglePollProposal extends Component {
   handleSignatureChange(event) {
     this.setState({
       inputSignature: event.target.value
-    }, this.checkSignature)
+    })
   }
 
   handleAddressChange(event) {
@@ -163,7 +163,7 @@ class SinglePollProposal extends Component {
             <div className='field'>
                 <div className="control has-icon-left">
                 <label className="label">Paste signature here</label>
-                    <input className="input proposalBox-buttom-spacer" type='text' placeholder='Enter your Signature' onChange={this.handleSignatureChange} value={this.state.inputSignature} required/>
+                    <input className="input proposalBox-buttom-spacer" type='text' placeholder='Enter your Signature' value={this.state.inputSignature} onChange={this.handleSignatureChange} required/>
                 </div>
             </div>
 
