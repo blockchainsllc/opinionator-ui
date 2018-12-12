@@ -1,3 +1,14 @@
+//
+// This file is part of voting-ui-new.
+// 
+// It is subject to the terms and conditions defined in
+// file 'LICENSE.', which is part of this source code package.
+//
+// @author Jonas Bentke 
+// @version 0.1
+// @copyright 2018 by Slock.it GmbH
+//
+
 import React, { Component } from 'react';
 import PollCollectionSinglePollLandingPage from './PollCollectionSinglePollLandingPage'
 import '../styles/PollCollection.css'
@@ -52,8 +63,8 @@ class PollCollection extends Component {
     return (
       <div>
         <div className="section container has-gutter-top-bottom">
-            <h1 className="title is-2 has-text-centered">Top Polls</h1>
-
+            <h1 className="title is-2 ">Top Polls</h1>
+<hr className="hr-page-breaker"/>
             <div className="tile is-ancestor tile-flexwrap">
             { /** TODO: Have to think about that, at least it works for now */ }
                 {maxPolls[0] !== undefined ? maxPolls.filter((poll) => {
@@ -63,17 +74,11 @@ class PollCollection extends Component {
         </div>
 
         <div className="section container has-gutter-top-bottom">
-            <h1 className="title is-2 has-text-centered">All Polls</h1>
-
+            <h1 className="title is-2 ">All Polls</h1>
+            <hr className="hr-page-breaker"/>
             <div className="tile is-ancestor tile-flexwrap">
                 {this.props.polls.map((poll) => (<PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>))}
-                { /** 2 empty "invisible" tiles to prevent weird stretching */ }
-                <div className="tile is-parent">
-                    <div className="tile is-child"></div>
-                </div>
-                <div className="tile is-parent">
-                    <div className="tile is-child"></div>
-                </div>
+
             </div>
         </div>
     </div>

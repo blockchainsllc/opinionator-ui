@@ -1,7 +1,22 @@
+/*
+// This file is part of voting-ui-new.
+// 
+// It is subject to the terms and conditions defined in
+// file 'LICENSE.', which is part of this source code package.
+//
+// @author Jonas Bentke 
+// @version 0.1
+// @copyright 2018 by Slock.it GmbH
+*/
+
 .top-gutter {
     margin-top: 2rem
 }
 
 .bottom-gutter {
     margin-bottom: 2rem
+}
+
+.background-box {
+    background-color: rgb(176, 176, 176)
 }
