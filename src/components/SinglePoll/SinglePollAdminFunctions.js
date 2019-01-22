@@ -46,7 +46,9 @@ class SinglePollAdminFunctions extends Component {
     this.setState({
       buttonCreateActive: false
     })
-    this.props.handleButtonAdminFunctionsOnClick()
+    //this.props.handleButtonAdminFunctionsOnClick()
+    ///@dev instead of deactivating the modal, we reload the page to include the newly created proposal. Modal will be reset by that anyway
+    window.location.reload();
   }
 
   render() {

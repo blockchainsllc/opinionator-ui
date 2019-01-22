@@ -27,7 +27,7 @@ class Search extends Component {
                     <div className="container">
                         <div className="columns is-centered">
                             <div className="column is-5-tablet is-6-desktop is-7-widescreen">
-                                <SearchForm/>
+                                <SearchForm history={this.props.history}/>
                             </div>
                         </div>
                     </div>

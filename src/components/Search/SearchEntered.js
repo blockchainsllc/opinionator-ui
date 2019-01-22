@@ -10,12 +10,18 @@
 //
 
 import React, { Component } from 'react'
+import PollCollectionSinglePollLandingPage from '../PollCollection/PollCollectionSinglePollLandingPage'
 
 class SearchEntered extends Component {
   render() {
-    return (<section>
-        <label className="label">Hallo</label>
-    </section>)
+    return (<div className="section container has-gutter-top-bottom">
+    <h1 className="title is-3 ">Search Result</h1>
+    <hr className="hr-page-breaker"/>
+    <div className="tile is-ancestor tile-flexwrap">
+        {this.props.polls.map((poll) => (<PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>))}
+
+    </div>
+</div>)
   }
 }
 

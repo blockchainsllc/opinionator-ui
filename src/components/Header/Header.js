@@ -26,6 +26,7 @@ class Header extends Component {
                 <a className="navbar-item" href="/">Home</a>
                 <a className="navbar-item" href="/createPoll">Create</a>
                 { /**<a className="navbar-item" href="/search">Search</a> */ }
+                <a className="navbar-item" href="/search">Search</a>
 
             </div>
           </div>

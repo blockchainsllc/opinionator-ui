@@ -17,6 +17,7 @@ import Footer from './Footer/Footer'
 import PollCollection from './PollCollection/PollCollection'
 import SinglePoll from './SinglePoll/SinglePoll'
 import Search from './Search/Search'
+import SearchEntered from './Search/SearchEntered'
 import { BrowserRouter, Route } from 'react-router-dom';
 import { getPoll, getPollAmount } from '../interfaces/DataInterface.js'
 import { getAmountOfVotesForPoll } from '../interfaces/DatabaseInterface.js'
@@ -68,7 +69,10 @@ class App extends Component {
             <Route exact path="/" render={() => <PollCollection polls={this.state.polls}/>}/>
             <Route exact path="/createPoll" render={() => <CreatePoll web3Interface={this.state.web3Interface}/>}/>
             <Route exact path="/collection/:id" component={(props) => <SinglePoll poll={this.state.polls.find(poll => poll.id === parseInt(props.match.params.id))} web3Interface={this.state.web3Interface}/>} />
-            <Route exact path="/search" component={Search} />
+            <Route exact path="/search" component={({history}) => <Search history={history} />} />
+            <Route exact path="/search/:searchString" component={(props) => <SearchEntered polls={this.state.polls.filter((poll) => {
+          return poll.title.toLowerCase().includes(props.match.params.searchString.toLowerCase())
+        })} />} />
           </div>
         </BrowserRouter>
         <Footer/>
