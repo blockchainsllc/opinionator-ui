@@ -1,0 +1,81 @@
+image: docker.slock.it/build-images/node:10-alpine
+
+stages:
+  - build
+  - package
+  - deploy
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+
+# Job templates
+.ui-build: &ui_build
+  stage: build
+  tags:
+    - short-jobs
+  script:
+    - sh /prepare.sh
+    - yarn install
+    - cp deploy-configs/config.$CHAIN.json src/new-config.json
+    - jq ".version = \"$CI_COMMIT_REF_NAME\"" src/new-config.json > src/config.json
+    - yarn run build
+  artifacts:
+    name: build-${CHAIN}
+    paths:
+      - build/
+
+.docker-package: &ui_package
+  stage: package
+  tags:
+    - short-jobs
+  image: docker
+  services:
+    - docker:dind
+  script:
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME}-${CHAIN} .
+    - docker tag $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME}-${CHAIN} $CI_REGISTRY_IMAGE:latest-${CHAIN}
+    - docker push $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME}-${CHAIN}
+    - docker push $CI_REGISTRY_IMAGE:latest-${CHAIN}
+
+ui-for-mainnet:
+  <<: *ui_build
+  variables:
+    CHAIN: mainnet
+
+ui-for-tobalaba:
+  <<: *ui_build
+  variables:
+    CHAIN: tobalaba
+
+docker-for-mainnet:
+  <<: *ui_package
+  dependencies:
+    - ui-for-mainnet
+  variables:
+    CHAIN: mainnet
+
+docker-for-tobalaba:
+  <<: *ui_package
+  dependencies:
+    - ui-for-tobalaba
+  variables:
+    CHAIN: tobalaba
+
+deploy-to-production:
+    stage: deploy
+    tags:
+    - short-jobs
+    only:
+        - tags
+    image: markuskeil/docker-and-rancher
+    dependencies:
+      - docker-for-mainnet
+      - docker-for-tobalaba
+    services:
+      - docker:dind
+    script:
+      - rancher-compose -p $CI_PROJECT_PATH_SLUG up -p -d -c --force-upgrade
+
