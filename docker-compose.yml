@@ -1,0 +1,16 @@
+version: '2'
+services:
+  frontend-mainnet:
+    image: docker.slock.it/blockchain-voting/voting-ui-new:${CI_COMMIT_TAG}-mainnet
+    stdin_open: true
+    tty: true
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label: role=application
+  frontend-tobalaba:
+    image: docker.slock.it/blockchain-voting/voting-ui-new:${CI_COMMIT_TAG}-tobalaba
+    stdin_open: true
+    tty: true
+    labels:
+      io.rancher.container.pull_image: always
+      io.rancher.scheduler.affinity:host_label: role=application
