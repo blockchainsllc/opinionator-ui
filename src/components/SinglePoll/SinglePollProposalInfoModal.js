@@ -22,7 +22,7 @@ class SinglePollProposalInfoModal extends Component {
                     <section>
                         <div className="title">Message Signing</div>
                         <div>To sign your vote, copy the message from the box and sign it with your private key. 
-                            If you know how to do it great! If not its very simple. Just visit <a href="https://www.myetherwallet.com/signmsg.html">myetherwallet.com</a> 
+                            If you know how to do it great! If not its very simple. Just visit <a target="_blank" href="https://www.myetherwallet.com/signmsg.html">myetherwallet.com</a> 
                              and paste the message there. Then choose how to sign it with one of the given methods. As soon as it is sign, copy the "signature" part
                              from the result and paste it here. And all done!</div>
                     </section>

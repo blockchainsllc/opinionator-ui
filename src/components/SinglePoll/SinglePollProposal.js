@@ -36,7 +36,7 @@ class SinglePollProposal extends Component {
 
   handleClickOnProposalBox() {
     this.setState({
-      expanded: !this.state.expanded && parseInt(this.props.endDate) > parseInt(Date.now().toString().substring(0, 10))
+      expanded: !this.state.expanded && (this.props.endDate === "0" || parseInt(this.props.endDate) > parseInt(Date.now().toString().substring(0, 10)))
     });
   }
 
@@ -105,6 +105,7 @@ class SinglePollProposal extends Component {
 
     const loadingScreen = <div></div>
     const message = this.getMessage()
+
     return (
       <div>
         {this.state.showSignatureModal ? < SinglePollProposalInfoModal handleClickInfoButtonSignature={this.handleClickInfoButtonSignature}/> : null}
@@ -134,7 +135,7 @@ class SinglePollProposal extends Component {
                 <div className="column">
                     <FontAwesomeIcon icon={faCoins} /> 
             { /**slice the last 18 digits to get eth instead of wei (not nice but simple enough (calculation is still accurate, only for display))*/ }
-                    {this.props.proposalData.coin.slice(0, -18)}
+                    {this.props.proposalData.coin !== "0" ? this.props.proposalData.coin.slice(0, -18) : 0}
                 </div>
                 <div className="column">
                     <FontAwesomeIcon icon={faCogs} /> 
@@ -153,7 +154,7 @@ class SinglePollProposal extends Component {
             </div>
 
             { /** Form for signing */ }
-            {this.state.expanded && this.props.endDate > (Date.now() / 1000) ?
+            {this.state.expanded ?
 
           <div className="section">
 
