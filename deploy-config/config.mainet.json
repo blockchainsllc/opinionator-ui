@@ -1,0 +1,5 @@
+{
+    "api": "https://voting.slock.it/api",
+    "contractAddress": "0x096DA8ED2eaFd6945b325DfD515315CBeB36F6d3",
+    "version": "v0.0.0"
+}
