@@ -46,6 +46,7 @@ export async function getProposalData(web3Interface, proposalIds, coinWeight, ga
       proposal.coin = new BigNumber(proposal.coin);
       proposal.dev = new BigNumber(proposal.dev);
       proposal.miner = new BigNumber(proposal.miner);
+      return proposal
     })
   }
   //sums up the key values for all proposals, necessary to calculate proposal percentage
@@ -62,6 +63,8 @@ export async function getProposalData(web3Interface, proposalIds, coinWeight, ga
     proposal.coin = proposal.coin.toString()
     proposal.dev = proposal.dev.toString()
     proposal.miner = proposal.miner.toString()
+
+    return proposal
   })
 
   return proposals
