@@ -68,7 +68,8 @@ class PollCollection extends Component {
             <div className="tile is-ancestor tile-flexwrap">
             { /** TODO: Have to think about that, at least it works for now */ }
                 {maxPolls[0] !== undefined ? maxPolls.filter((poll) => {
-        if (poll) return poll
+        if (poll) return true
+        else return false
       }).map((poll) => ( <PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>)) : null}
             </div>
         </div>
