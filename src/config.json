@@ -1,6 +1,6 @@
 {
     "api": "https://voting-tobalaba.stage.slock.it/api",
-    "contractAddress": "0xe960e07e1f467e9f43df04027211fd49d105dc37",
+    "contractAddress": "0xfddfe21f7aaeefea5d313f8022538635fb1849ca",
     "version": "v0.0.0",
     "remoteProvider": "https://tobalaba-rpc.slock.it"
 }
