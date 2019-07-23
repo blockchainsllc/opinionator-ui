@@ -33,8 +33,6 @@ stages:
     - docker build -t $CI_REGISTRY_IMAGE:${CHAIN}-${CI_COMMIT_REF_NAME} .
     - docker push $CI_REGISTRY_IMAGE:${CHAIN}-${CI_COMMIT_REF_NAME}
 
-
-
 .deploy-tmpl:
   stage: deploy
   except:
@@ -86,6 +84,7 @@ deploy-to-stage:
       - /^v[0-9]+.[0-9]+.[0-9]+-(alpha|beta|rc)\.[0-9]+$/
     variables:
       TARGET: stage
+      CHAIN: goerli
 
 deploy-to-production:
     extends: .deploy-tmpl
@@ -95,4 +94,5 @@ deploy-to-production:
       - /^v[0-9]+.[0-9]+.[0-9]+$/
     variables:
       TARGET: production
+      CHAIN: mainnet
 
