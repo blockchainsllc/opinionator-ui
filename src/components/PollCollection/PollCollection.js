@@ -38,7 +38,7 @@ class PollCollection extends Component {
       pollMax3;
 
     for (let i = 0, len = this.props.polls.length; i < len; i++) {
-      let v = this.props.polls[i].votes;
+      let v = this.props.polls[i].votes.length;
 
       if (v > max1) {
         max1 = v

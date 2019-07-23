@@ -60,7 +60,7 @@ class App extends Component {
   //collects a poll and stores it in the state array for polls
   async getPolls(pollId) {
     var pollObj = await getPoll(this.state.web3Interface, pollId);
-    pollObj.votes = (await getAmountOfVotesForPoll(pollId)).length;
+    pollObj.votes = (await getAmountOfVotesForPoll(pollId));
     this.setState({
       polls: this.state.polls.concat(pollObj)
     })

@@ -19,7 +19,7 @@ import { BigNumber } from 'bignumber.js';
 //@param proposals This contains the proposals already set before. This prevents unnessassary calls to the database. If this is null, the proposals will be 
 //                 pulled from the database and the blockchain. If you pass proposals, it will calculate the proposal percentage new depending on the new 
 //                 parameter passed to the function.
-export async function getProposalData(web3Interface, proposalIds, coinWeight, gasWeight, developerWeight, minerWeight, proposals) {
+export async function getProposalData(web3Interface, proposalIds, pollVotes, coinWeight, gasWeight, developerWeight, minerWeight, proposals) {
   if (!proposals) {
     proposals = []
     for (let i = 0; i < proposalIds.length; i++) {
@@ -35,7 +35,8 @@ export async function getProposalData(web3Interface, proposalIds, coinWeight, ga
         coin: new BigNumber(gasAndCoinSum.coin_sum),
         gas: new BigNumber(gasAndCoinSum.gas_sum),
         dev: new BigNumber((await getDevForProposal(tempProposal.pollId, proposalIds[i])).gas_sum),
-        miner: new BigNumber((await getMinerForProposal(tempProposal.pollId, proposalIds[i])).gas_sum)
+        miner: new BigNumber((await getMinerForProposal(tempProposal.pollId, proposalIds[i])).gas_sum),
+        numberOfVotes: getNumberOfVotesForProposal(proposalIds[i], pollVotes),
       }
       proposals.push(proposal)
     }
@@ -54,9 +55,10 @@ export async function getProposalData(web3Interface, proposalIds, coinWeight, ga
   const gasSum = new BigNumber(proposals.map((proposal) => proposal.gas).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
   const devSum = new BigNumber(proposals.map((proposal) => proposal.dev).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
   const minerSum = new BigNumber(proposals.map((proposal) => proposal.miner).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
+  const numberOfVotesSum = pollVotes.length
 
   proposals.map((proposal) => {
-    proposal.percentage = calculateProposalPercentage(proposal.coin, proposal.gas, proposal.dev, proposal.miner, coinSum, gasSum, devSum, minerSum, coinWeight, gasWeight, developerWeight, minerWeight)
+    proposal.percentage = calculateProposalPercentage(proposal.coin, proposal.gas, proposal.dev, proposal.miner, proposal.numberOfVotes, coinSum, gasSum, devSum, minerSum, numberOfVotesSum, coinWeight, gasWeight, developerWeight, minerWeight)
 
     //parse values to readable strings (so the UI can depict them easier)
     proposal.gas = proposal.gas.toString()
@@ -74,6 +76,9 @@ async function getProposal(web3Interface, proposalId) {
   return await web3Interface.contract.methods.proposals(proposalId).call()
 }
 
+function getNumberOfVotesForProposal(proposalId, pollVotes) {
+  return pollVotes.filter((vote) => vote.proposalId === proposalId).length;
+}
 //calculates the percentage a proposal has
 //@param coin Amount of coins assigned to the proposal
 //@param gas Amount of gas assigned to the proposal
@@ -81,7 +86,7 @@ async function getProposal(web3Interface, proposalId) {
 //@param miner Amount of hash power assigned to the proposal
 //@param coinSum, gasSum, devSum, minerSum Sum of key value from all proposals
 //@param coinWeight, gasWeight, developerWeight, minerWeight The weight given to the key value (between 0 and 100)
-function calculateProposalPercentage(coin, gas, dev, miner, coinSum, gasSum, devSum, minerSum, coinWeight, gasWeight, developerWeight, minerWeight) {
+function calculateProposalPercentage(coin, gas, dev, miner, numberOfVotes, coinSum, gasSum, devSum, minerSum, numberOfVotesSum, coinWeight, gasWeight, developerWeight, minerWeight) {
 
   //this ensures that 0 values will not go into the percentage calculation
   let weightSum = 0;
@@ -94,6 +99,11 @@ function calculateProposalPercentage(coin, gas, dev, miner, coinSum, gasSum, dev
   if (!minerSum.isZero())
     weightSum += minerWeight
 
+  //if all sliders are turned to 0, then calculate the pie parts dependend on the number of votes
+  if(weightSum === 0) {
+    return parseInt(100 * numberOfVotes / numberOfVotesSum)
+  }
+  
   //calculates the 4 parts of the overall proposal percentage. Each part is calculated by: key / keySum * (keyWeight / weightSum)
   let coinPartOfThePie = coinSum.comparedTo(new BigNumber(0)) === 1 ? new BigNumber((coin.dividedBy(coinSum).multipliedBy(new BigNumber(coinWeight / weightSum)))) : new BigNumber(0)
   let gasPartOfThePie = gasSum.comparedTo(new BigNumber(0)) === 1 ? new BigNumber((gas.dividedBy(gasSum).multipliedBy(new BigNumber(gasWeight / weightSum)))) : new BigNumber(0)
