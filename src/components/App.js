@@ -22,6 +22,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { getPoll, getPollAmount } from '../interfaces/DataInterface.js'
 import { getAmountOfVotesForPoll } from '../interfaces/DatabaseInterface.js'
 import Web3Interface from '../interfaces/Web3Interface.js'
+import ErrorBoundary from './ErrorBoundary';
 
 class App extends Component {
 
