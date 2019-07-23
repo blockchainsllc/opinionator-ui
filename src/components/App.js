@@ -71,7 +71,9 @@ class App extends Component {
       <ErrorBoundary>
         <div className="main-container">
           <Header web3Interface={this.state.web3Interface}/>
-          {!this.state.chainHasPolls ? <div style={{margin: '0 auto',width: '50vw',textAlign: 'center'}}>No Polls found on chain. Consider switching to a supported chain (Mainnet or Görli)</div> : null}
+          <BrowserRouter>
+            {!this.state.chainHasPolls ? <Route exact path="/" render={() => <div style={{margin: '0 auto',width: '50vw',textAlign: 'center'}}>No Polls found on chain. Consider switching to a supported chain (Mainnet or Görli)</div>}></Route> : null}
+          </BrowserRouter>
           <BrowserRouter>
             <div>
               <Route exact path="/" render={() => <PollCollection polls={this.state.polls}/>}/>
