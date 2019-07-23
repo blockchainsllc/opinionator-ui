@@ -106,7 +106,11 @@ function calculateProposalPercentage(coin, gas, dev, miner, coinSum, gasSum, dev
 
 //Blockchain request
 export async function getPollAmount(web3Interface) {
-  return parseInt(await web3Interface.contract.methods.getPollAmount().call(), 10)
+  try {
+    return parseInt(await web3Interface.contract.methods.getPollAmount().call(), 10)
+  } catch {
+    return 0;
+  }
 }
 
 //Blockchain request
