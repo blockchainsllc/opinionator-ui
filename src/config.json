@@ -1,6 +1,6 @@
 {
-    "api": "https://voting-tobalaba.stage.slock.it/api",
+    "api": "https://voting.stage.slock.it/api",
     "contractAddress": "0xfddfe21f7aaeefea5d313f8022538635fb1849ca",
     "version": "v0.0.0",
-    "remoteProvider": "https://tobalaba-rpc.slock.it"
+    "remoteProvider": "https://rpc.slock.it/goerli"
 }
