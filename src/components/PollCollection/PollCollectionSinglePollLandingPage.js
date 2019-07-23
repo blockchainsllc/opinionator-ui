@@ -27,7 +27,7 @@ class PollCollectionSinglePollLandingPage extends Component {
       }}>
                 <div className="title is-3 top-gutter">{this.props.pollData.title}</div>
             
-            <div className="title is-5 bottom-gutter has-text-grey">votes: {this.props.pollData.votes}</div>
+            <div className="title is-5 bottom-gutter has-text-grey">votes: {this.props.pollData.votes.length}</div>
             </Link>
         </div>
       </div>
