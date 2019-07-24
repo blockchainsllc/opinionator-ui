@@ -25,6 +25,8 @@ class SinglePollProposal extends Component {
       inputAddress: '',
       inputSignature: '',
       showSignatureModal: false,
+      inputAddressColor: '',
+      inputSignatureColor: '',
     }
 
     this.handleAddressChange = this.handleAddressChange.bind(this)
@@ -47,9 +49,17 @@ class SinglePollProposal extends Component {
   }
 
   handleAddressChange(event) {
-    this.setState({
-      inputAddress: event.target.value
-    })
+    if(event.target.value.length !== 42 || event.target.value[0] !== "0" || event.target.value[1] !== "x")
+      this.setState({
+        inputAddress: event.target.value,
+        inputAddressColor: "is-danger"
+      })
+      else{
+        this.setState({
+          inputAddress: event.target.value,
+          inputAddressColor: ""
+        })
+      }
   }
 
   getMessage() {
@@ -80,19 +90,25 @@ class SinglePollProposal extends Component {
       }
     } else {
       //show notification
-      alert("Error: Signature does not match")
+      this.setState({
+        inputSignatureColor: 'is-danger'
+      })
     }
   }
 
   async checkSignature() {
     let returnValue = false
     try {
-      returnValue = await this.props.web3Interface.web3.eth.accounts.recover(this.getMessage(), this.state.inputSignature).toLowerCase() === this.state.inputAddress
+      returnValue = await this.props.web3Interface.web3.eth.personal.ecRecover(this.getMessage(), this.state.inputSignature)
     } catch (error) {
       //show notification
       alert("Error: " + error)
     }
-    return returnValue
+    
+    if(returnValue.toLowerCase() === this.state.inputAddress.toLowerCase())
+      return true
+    else
+      return false
   }
 
   handleClickInfoButtonSignature() {
@@ -161,7 +177,7 @@ class SinglePollProposal extends Component {
             <div className='field'>
                 <div className="control has-icon-left">
                 <label className="label">Your Address</label>
-                    <input className="input" type='text' placeholder='Enter your address' onChange={this.handleAddressChange} value={this.state.inputAddress} required/>
+                    <input className={"input "+this.state.inputAddressColor} type='text' placeholder='Enter your address' onChange={this.handleAddressChange} value={this.state.inputAddress} required/>
                 </div>
             </div>
 
@@ -175,7 +191,7 @@ class SinglePollProposal extends Component {
             <div className='field'>
                 <div className="control has-icon-left">
                 <label className="label">Paste signature here</label>
-                    <input className="input proposalBox-buttom-spacer" type='text' placeholder='Enter your Signature' value={this.state.inputSignature} onChange={this.handleSignatureChange} required/>
+                    <input className={"input proposalBox-buttom-spacer " + this.state.inputSignatureColor} type='text' placeholder='Enter your Signature' value={this.state.inputSignature} onChange={this.handleSignatureChange} required/>
                 </div>
             </div>
 
