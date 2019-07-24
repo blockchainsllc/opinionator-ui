@@ -135,7 +135,7 @@ class SinglePollProposal extends Component {
                 <div className="column">
                     <FontAwesomeIcon icon={faCoins} /> 
             { /**slice the last 18 digits to get eth instead of wei (not nice but simple enough (calculation is still accurate, only for display))*/ }
-                    {this.props.proposalData.coin !== "0" ? this.props.proposalData.coin.slice(0, -18) : 0}
+                    {this.props.proposalData.coin !== "0" && this.props.proposalData.coin.toString().length > 18 ? this.props.proposalData.coin.slice(0, -18) : "<1"}
                 </div>
                 <div className="column">
                     <FontAwesomeIcon icon={faCogs} /> 
