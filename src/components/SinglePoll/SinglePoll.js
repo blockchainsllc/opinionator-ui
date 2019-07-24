@@ -13,7 +13,7 @@ import React, { Component } from 'react';
 import SinglePollProposal from './SinglePollProposal';
 import SinglePollPieChart from './SinglePollPieChart';
 import SinglePollSlider from './SinglePollSlider';
-import { getProposalData } from '../../interfaces/DataInterface';
+import { getProposalData, sumValuesFromProposals } from '../../interfaces/DataInterface';
 import SinglePollAdminFunctions from './SinglePollAdminFunctions';
 import '../styles/SinglePoll.css'
 
@@ -45,7 +45,15 @@ class SinglePoll extends Component {
 
     if (this.props.poll && this.props.web3Interface) {
       await this.getProposalDataFromInterface(null);
-      //TODO: how to check high level if it is enabled without destroying UX
+
+      const [coinSum, gasSum, devSum, minerSum] = sumValuesFromProposals(this.state.proposals)
+      this.setState({
+        coinSum: coinSum,
+        gasSum: gasSum,
+        devSum: devSum,
+        minerSum: minerSum,
+      })
+
       await this.props.web3Interface.initAccounts()
       let accounts = await this.props.web3Interface.web3.eth.getAccounts()
       this.setState({
@@ -125,28 +133,37 @@ class SinglePoll extends Component {
                             <div className="columns is-vcentered">
                                 <div className="column"> Gas </div>
                                 <div className="column is-8 no-padding">
-                                    <SinglePollSlider currentValue={this.state.gasSliderValue} onSliderChange={(e) => this.onGasSliderChange(e)}/>
+                                  {this.state.gasSum.toString() !== "0"?
+                                  <SinglePollSlider currentValue={this.state.gasSliderValue} onSliderChange={(e) => this.onGasSliderChange(e)}/>:
+                                  <SinglePollSlider currentValue={0} onSliderChange={(newValue) => {}}/>}
                                 </div>
                                 <div className="column is-tablet is-2"/>
                             </div>
                             <div className="columns is-vcentered">
                                 <div className="column"> Coins </div>
                                 <div className="column is-8 no-padding">
-                                    <SinglePollSlider currentValue={this.state.coinSliderValue} onSliderChange={(e) => this.onCoinSliderChange(e)}/>
+                                  {this.state.coinSum.toString() !== "0"?
+                                  <SinglePollSlider currentValue={this.state.coinSliderValue} onSliderChange={(e) => this.onCoinSliderChange(e)}/>:
+                                  <SinglePollSlider currentValue={0} onSliderChange={(newValue) => {}}/>}
                                 </div>
                                 <div className="column is-tablet is-2"/>
                             </div>
                             <div className="columns is-vcentered">
                                 <div className="column"> Dev </div>
                                 <div className="column is-8 no-padding">
-                                    <SinglePollSlider currentValue={this.state.devSliderValue} onSliderChange={(e) => this.onDevSliderChange(e)}/>
+                                  {this.state.devSum.toString() !== "0"?
+                                  <SinglePollSlider currentValue={this.state.devSliderValue} onSliderChange={(e) => this.onDevSliderChange(e)}/>:
+                                  <SinglePollSlider currentValue={0} onSliderChange={(newValue) => {}}/>}
                                 </div>
                                 <div className="column is-tablet is-2"/>
                             </div>
                             <div className="columns is-vcentered">
                                 <div className="column"> Miner </div>
                                 <div className="column is-8 no-padding">
-                                    <SinglePollSlider currentValue={this.state.minerSliderValue} onSliderChange={(e) => this.onMinerSliderChange(e)}/>
+                                  {this.state.minerSum.toString() !== "0"?
+                                    <SinglePollSlider currentValue={this.state.minerSliderValue} onSliderChange={(e) => this.onMinerSliderChange(e)}/>:
+                                    <SinglePollSlider currentValue={0} onSliderChange={(newValue) => {}}/>}
+                                    
                                 </div>
                                 <div className="column is-tablet is-2"/>
                             </div>

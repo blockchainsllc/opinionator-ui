@@ -51,10 +51,7 @@ export async function getProposalData(web3Interface, proposalIds, pollVotes, coi
     })
   }
   //sums up the key values for all proposals, necessary to calculate proposal percentage
-  const coinSum = new BigNumber(proposals.map((proposal) => proposal.coin).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
-  const gasSum = new BigNumber(proposals.map((proposal) => proposal.gas).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
-  const devSum = new BigNumber(proposals.map((proposal) => proposal.dev).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
-  const minerSum = new BigNumber(proposals.map((proposal) => proposal.miner).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
+  const [coinSum, gasSum, devSum, minerSum] = sumValuesFromProposals(proposals)
   const numberOfVotesSum = pollVotes.length
 
   proposals.map((proposal) => {
@@ -70,6 +67,14 @@ export async function getProposalData(web3Interface, proposalIds, pollVotes, coi
   })
 
   return proposals
+}
+
+export function sumValuesFromProposals(proposals) {
+  const coinSum = new BigNumber(proposals.map((proposal) => proposal.coin).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
+  const gasSum = new BigNumber(proposals.map((proposal) => proposal.gas).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
+  const devSum = new BigNumber(proposals.map((proposal) => proposal.dev).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
+  const minerSum = new BigNumber(proposals.map((proposal) => proposal.miner).reduce((previous, current) => previous.plus(current), new BigNumber(0)))
+  return [coinSum, gasSum, devSum, minerSum]
 }
 
 async function getProposal(web3Interface, proposalId) {
