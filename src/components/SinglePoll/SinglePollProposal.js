@@ -246,7 +246,7 @@ class SinglePollProposal extends Component {
                   {<button className="button is-left is-link" onClick={this.handleClickOnSendSignatureButton}>Sign Manually</button>}
                 </div>
               </div>
-              {/** !! Fix for mobile view !! */}
+
               <div className="column is-narrow">
                 <div className="spacer"></div>
               </div>
