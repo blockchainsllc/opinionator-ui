@@ -218,32 +218,42 @@ class SinglePollProposal extends Component {
 
             { /** Form for signing */ }
             {this.state.expanded ?
+          <div className="columns">
+            <div className="column is-two-thirds">
+              <div className="section">
 
-          <div className="section">
+                  <div className='field'>
+                      <div className="control has-icon-left">
+                      <label className="label">Your Address</label>
+                          <input className={"input "+this.state.inputAddressColor} type='text' placeholder='Enter your address' onChange={this.handleAddressChange} value={this.state.inputAddress} required/>
+                      </div>
+                  </div>
 
-            <div className='field'>
-                <div className="control has-icon-left">
-                <label className="label">Your Address</label>
-                    <input className={"input "+this.state.inputAddressColor} type='text' placeholder='Enter your address' onChange={this.handleAddressChange} value={this.state.inputAddress} required/>
+                  <div className='field'>
+                      <div className="control has-icon-left">
+                      <label className="label">The message to vote on <FontAwesomeIcon icon={faQuestionCircle} onClick={this.handleClickInfoButtonSignature}/></label>
+                      <input className="input is-disabled" type='text' value={message} readOnly={true}/>
+                      </div>
+                  </div>
+
+                  <div className='field'>
+                      <div className="control has-icon-left">
+                      <label className="label">Paste signature here</label>
+                          <input className={"input proposalBox-buttom-spacer " + this.state.inputSignatureColor} type='text' placeholder='Enter your Signature' value={this.state.inputSignature} onChange={this.handleSignatureChange} required/>
+                      </div>
+                  </div>
+
+                  {<button className="button is-left is-link" onClick={this.handleClickOnSendSignatureButton}>Sign Manually</button>}
                 </div>
+              </div>
+              {/** !! Fix for mobile view !! */}
+              <div className="column is-narrow">
+                <div className="spacer"></div>
+              </div>
+            <div className="column">
+              {this.state.metamaskEnabled?<button className="button vertical-center is-link metamaskSign-button-spacer metamaskSign-button-color" onClick={this.handleMetamaskSignButton}>Sign with Metamask</button>:<button className="button vertical-center is-link metamaskSign-button-spacer metamaskSign-button-color" disabled>Sign with Metamask</button>}
             </div>
 
-            <div className='field'>
-                <div className="control has-icon-left">
-                <label className="label">The message to vote on <FontAwesomeIcon icon={faQuestionCircle} onClick={this.handleClickInfoButtonSignature}/></label>
-                <input className="input is-disabled" type='text' value={message} readOnly={true}/>
-                </div>
-            </div>
-
-            <div className='field'>
-                <div className="control has-icon-left">
-                <label className="label">Paste signature here</label>
-                    <input className={"input proposalBox-buttom-spacer " + this.state.inputSignatureColor} type='text' placeholder='Enter your Signature' value={this.state.inputSignature} onChange={this.handleSignatureChange} required/>
-                </div>
-            </div>
-
-            {<button className="button is-left is-link" onClick={this.handleClickOnSendSignatureButton}>Sign Manually</button>}
-            {this.state.metamaskEnabled?<button className="button is-left is-warning" onClick={this.handleMetamaskSignButton}>Sign with Metamask</button>:<button className="button is-left is-warning" disabled>Sign with Metamask</button>}
             </div> : null}
         </div>
       }
