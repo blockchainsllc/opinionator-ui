@@ -12,6 +12,7 @@
 import React, { Component } from 'react';
 import { sendVote } from '../../interfaces/DatabaseInterface'
 import SinglePollProposalInfoModal from './SinglePollProposalInfoModal'
+import SinglePollProposalReturnModal from './SinglePollProposalReturnModal'
 import "../styles/SinglePollProposal.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPercentage, faGasPump, faCoins, faCogs, faCubes, faAngleUp, faAngleDown, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
@@ -25,8 +26,10 @@ class SinglePollProposal extends Component {
       inputAddress: '',
       inputSignature: '',
       showSignatureModal: false,
+      showReturnModal: false,
       inputAddressColor: '',
       inputSignatureColor: '',
+      returnedSignature: '',
     }
 
     this.handleAddressChange = this.handleAddressChange.bind(this)
@@ -34,6 +37,7 @@ class SinglePollProposal extends Component {
     this.handleClickOnProposalBox = this.handleClickOnProposalBox.bind(this)
     this.handleClickOnSendSignatureButton = this.handleClickOnSendSignatureButton.bind(this)
     this.handleClickInfoButtonSignature = this.handleClickInfoButtonSignature.bind(this)
+    this.handleCloseReturnModal = this.handleCloseReturnModal.bind(this)
   }
 
   handleClickOnProposalBox() {
@@ -74,15 +78,17 @@ class SinglePollProposal extends Component {
     let signatureMatches = await this.checkSignature()
     if (signatureMatches) {
       try {
-        await sendVote({
+        let response = await sendVote({
           message: this.getMessage(),
           version: '0.1',
           signature: this.state.inputSignature
         })
-        alert("Thank you for participating")
+      
         this.setState({
           inputAddress: '',
-          inputSignature: ''
+          inputSignature: '',
+          returnedSignature: response,
+          showReturnModal: true,
         })
       } catch (error) {
         //show notification
@@ -117,6 +123,12 @@ class SinglePollProposal extends Component {
     })
   }
 
+  handleCloseReturnModal() {
+    this.setState({
+      showReturnModal: false
+    })
+  }
+
   render() {
 
     const loadingScreen = <div></div>
@@ -125,6 +137,7 @@ class SinglePollProposal extends Component {
     return (
       <div>
         {this.state.showSignatureModal ? < SinglePollProposalInfoModal handleClickInfoButtonSignature={this.handleClickInfoButtonSignature}/> : null}
+        {this.state.showReturnModal ? < SinglePollProposalReturnModal handleCloseReturnModal={this.handleCloseReturnModal} response={this.state.returnedSignature}/> : null}
         {!this.props.proposalData ? loadingScreen :
         <div className="box proposalBox-buttom-spacer" >
             <div className="columns">
