@@ -30,6 +30,7 @@ class SinglePollProposal extends Component {
       inputAddressColor: '',
       inputSignatureColor: '',
       returnedSignature: '',
+      metamaskEnabled: false,
     }
 
     this.handleAddressChange = this.handleAddressChange.bind(this)
@@ -38,6 +39,15 @@ class SinglePollProposal extends Component {
     this.handleClickOnSendSignatureButton = this.handleClickOnSendSignatureButton.bind(this)
     this.handleClickInfoButtonSignature = this.handleClickInfoButtonSignature.bind(this)
     this.handleCloseReturnModal = this.handleCloseReturnModal.bind(this)
+    this.handleMetamaskSignButton = this.handleMetamaskSignButton.bind(this)
+  }
+
+  componentDidMount() {
+    if (typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined')){
+      this.setState({
+        metamaskEnabled: true
+      })
+    }
   }
 
   handleClickOnProposalBox() {
@@ -129,6 +139,30 @@ class SinglePollProposal extends Component {
     })
   }
 
+  async handleMetamaskSignButton() {
+    const ethAddress = (await this.props.web3Interface.web3.eth.getAccounts())[0]
+    const message = this.getMessage()
+    const result = await this.props.web3Interface.web3.eth.personal.sign(message, ethAddress)
+
+    try {
+      let response = await await sendVote({
+        message: message,
+        version: '0.1',
+        signature: result
+      })
+      this.setState({
+        inputAddress: '',
+        inputSignature: '',
+        returnedSignature: response,
+        showReturnModal: true,
+      })
+    } catch (error) {
+      //show notification
+      alert("Error: You already participated. Please try another address\n" + error)
+    }
+
+  }
+
   render() {
 
     const loadingScreen = <div></div>
@@ -208,8 +242,8 @@ class SinglePollProposal extends Component {
                 </div>
             </div>
 
-            {<button className="button is-left is-link" onClick={this.handleClickOnSendSignatureButton}>Send Signature</button>}
-
+            {<button className="button is-left is-link" onClick={this.handleClickOnSendSignatureButton}>Sign Manually</button>}
+            {this.state.metamaskEnabled?<button className="button is-left is-warning" onClick={this.handleMetamaskSignButton}>Sign with Metamask</button>:<button className="button is-left is-warning" disabled>Sign with Metamask</button>}
             </div> : null}
         </div>
       }
