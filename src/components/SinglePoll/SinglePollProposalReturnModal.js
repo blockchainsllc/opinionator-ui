@@ -21,14 +21,14 @@ class SinglePollProposalReturnModal extends Component {
         this.clickDownloadButton = this.clickDownloadButton.bind(this)
       }
 
-    clickDownloadButton(Response) {
+    clickDownloadButton() {
         var dd = {
             content: [
                 {
                     text: 'You signed vote',
                     style: 'header'
                 },
-                Response
+                JSON.stringify(this.props.response)
             ],
             styles: {
                 header: {
@@ -59,7 +59,7 @@ class SinglePollProposalReturnModal extends Component {
                 <div className="box">
                     <section>
                         <div className="title">Voting Successfull</div>
-                        <div>Thank you for participating! For your safety we signed your vote so you can know that we have it. klick <a onClick={this.clickDownloadButton} style="cursor: pointer; cursor: hand;">here</a> to download the pdf.</div>
+                        <div>Thank you for participating! For your safety we signed your vote so you can know that we have it. klick <button onClick={this.clickDownloadButton}>here</button> to download the pdf.</div>
                     </section>
                 </div>
               </div>
