@@ -11,6 +11,7 @@
 
 import React, { Component } from 'react';
 import HeaderBrand from './HeaderBrand.js';
+import {Link, withRouter} from 'react-router-dom';
 
 class Header extends Component {
 
@@ -22,12 +23,9 @@ class Header extends Component {
 
           <div className="navbar-menu">
             <div className="navbar-start">
-              
-                <a className="navbar-item" href="/">Home</a>
-                <a className="navbar-item" href="/createPoll">Create</a>
-                { /**<a className="navbar-item" href="/search">Search</a> */ }
-                <a className="navbar-item" href="/search">Search</a>
-
+              <Link className="navbar-item" to="/">Home</Link>
+              <Link className="navbar-item" to="/createPoll">Create</Link>
+              <Link className="navbar-item" to="/search">Search</Link>
             </div>
           </div>
         </nav>
@@ -36,4 +34,4 @@ class Header extends Component {
   }
 }
 
-export default Header;
+export default withRouter(Header);

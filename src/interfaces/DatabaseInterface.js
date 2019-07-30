@@ -23,7 +23,7 @@ export const sendVote = async (inputData) => {
     }
   };
 
-  return axios.post(backendAddress + '/Votes', args).then(_ => _.data)
+  return axios.post(backendAddress + '/Votes', args).then(response => response.data)
 };
 
 export const getGasForProposal = async (pollId, proposalId) => {

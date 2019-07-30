@@ -11,12 +11,13 @@
 
 import React, { Component } from 'react';
 import './../styles/Footer.css'
+import config from '../../config.json';
 class Footer extends Component {
   render() {
     return (
       <div className="fix-footer">
             <div className="footer-text">
-                <p className="has-text-centered"><a href="https://slock.it/impressum.html">Legal Notice</a> - <a href="https://slock.it/privacy_web.html">Privacy Notice</a> - © Copright 2015-2019 Slock.it GmbH - All Rights Reserved</p>
+                <p className="has-text-centered"><a href="https://slock.it/impressum.html">Legal Notice</a> - <a href="https://slock.it/privacy_web.html">Privacy Notice</a> - © Copright 2015-2019 Slock.it GmbH - All Rights Reserved - {config.version}</p>
             </div>
       </div>
       );

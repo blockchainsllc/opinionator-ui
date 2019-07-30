@@ -22,6 +22,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { getPoll, getPollAmount } from '../interfaces/DataInterface.js'
 import { getAmountOfVotesForPoll } from '../interfaces/DatabaseInterface.js'
 import Web3Interface from '../interfaces/Web3Interface.js'
+import ErrorBoundary from './ErrorBoundary';
 
 class App extends Component {
 
@@ -29,7 +30,8 @@ class App extends Component {
     super(props);
     this.state = {
       polls: [],
-      web3Interface: new Web3Interface()
+      web3Interface: new Web3Interface(),
+      chainHasPolls: true
     };
     this.getPolls = this.getPolls.bind(this)
   }
@@ -37,6 +39,10 @@ class App extends Component {
   async componentDidMount() {
     //TODO: I really dont like that here, should move it somewhere else
     const pollAmount = await getPollAmount(this.state.web3Interface)
+    if(pollAmount === 0) {
+      // Triggers a display to suggest to change chains.
+      this.setState({chainHasPolls:false});
+    }
 
     //gets one poll every 50ms to not spam the backend
     for (var i = 0; i < pollAmount; i++) {
@@ -54,29 +60,33 @@ class App extends Component {
   //collects a poll and stores it in the state array for polls
   async getPolls(pollId) {
     var pollObj = await getPoll(this.state.web3Interface, pollId);
-    pollObj.votes = (await getAmountOfVotesForPoll(pollId)).length;
+    pollObj.votes = (await getAmountOfVotesForPoll(pollId));
     this.setState({
       polls: this.state.polls.concat(pollObj)
     })
   }
 
+
   render() {
     return (
-      <div className="main-container">
-        <Header web3Interface={this.state.web3Interface}/>
+      <ErrorBoundary>
         <BrowserRouter>
-          <div>
+          <div className="main-container">
+            <Header web3Interface={this.state.web3Interface}/>
+
+            {!this.state.chainHasPolls ? <Route exact path="/" render={() => <div style={{margin: '0 auto',width: '50vw',textAlign: 'center'}}>No Polls found on chain. Consider switching to a supported chain (Mainnet or Görli)</div>}></Route> : null}
+
             <Route exact path="/" render={() => <PollCollection polls={this.state.polls}/>}/>
             <Route exact path="/createPoll" render={() => <CreatePoll web3Interface={this.state.web3Interface}/>}/>
             <Route exact path="/collection/:id" component={(props) => <SinglePoll poll={this.state.polls.find(poll => poll.id === parseInt(props.match.params.id))} web3Interface={this.state.web3Interface}/>} />
             <Route exact path="/search" component={({history}) => <Search history={history} />} />
             <Route exact path="/search/:searchString" component={(props) => <SearchEntered polls={this.state.polls.filter((poll) => {
-          return poll.title.toLowerCase().includes(props.match.params.searchString.toLowerCase())
-        })} />} />
+            return poll.title.toLowerCase().includes(props.match.params.searchString.toLowerCase())
+            })} />} />
+            <Footer/>
           </div>
         </BrowserRouter>
-        <Footer/>
-      </div>
+      </ErrorBoundary>
       );
   }
 }

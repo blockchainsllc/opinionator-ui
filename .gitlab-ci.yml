@@ -5,13 +5,8 @@ stages:
   - package
   - deploy
 
-cache:
-  key: ${CI_COMMIT_REF_SLUG}
-  paths:
-    - node_modules/
-
 # Job templates
-.ui-build: &ui_build
+.ui-build: 
   stage: build
   tags:
     - short-jobs
@@ -26,7 +21,7 @@ cache:
     paths:
       - build/
 
-.docker-package: &ui_package
+.docker-package: 
   stage: package
   tags:
     - short-jobs
@@ -35,47 +30,69 @@ cache:
     - docker:dind
   script:
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
-    - docker build -t $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME}-${CHAIN} .
-    - docker tag $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME}-${CHAIN} $CI_REGISTRY_IMAGE:latest-${CHAIN}
-    - docker push $CI_REGISTRY_IMAGE:${CI_COMMIT_REF_NAME}-${CHAIN}
-    - docker push $CI_REGISTRY_IMAGE:latest-${CHAIN}
+    - docker build -t $CI_REGISTRY_IMAGE:${CHAIN}-${CI_COMMIT_REF_NAME} .
+    - docker push $CI_REGISTRY_IMAGE:${CHAIN}-${CI_COMMIT_REF_NAME}
 
-ui-for-mainnet:
-  <<: *ui_build
+.deploy-tmpl:
+  stage: deploy
+  except:
+    - branches
+  tags:
+    - short-jobs
+  image: docker.slock.it/build-images/deployment
+  services:
+    - docker:dind
+  script:
+    - rancher -w up -d --prune -p -s voting-ui-${TARGET} -c --force-upgrade
+    - sentry-cli releases new -p voting-ui voting-ui@${CI_COMMIT_REF_NAME}
+    - sentry-cli releases deploys voting-ui@${CI_COMMIT_REF_NAME} new -e ${TARGET}
+    - sentry-cli releases set-commits --auto voting-ui@${CI_COMMIT_REF_NAME}
+
+ui-for-stage:
+  extends: .ui-build
+  variables:
+    CHAIN: goerli
+
+docker-for-stage:
+  extends: .docker-package
+  dependencies:
+    - ui-for-stage
+  variables:
+    TARGET: stage
+    CHAIN: goerli
+
+
+ui-for-production:
+  extends: .ui-build
   variables:
     CHAIN: mainnet
 
-ui-for-tobalaba:
-  <<: *ui_build
-  variables:
-    CHAIN: tobalaba
-
-docker-for-mainnet:
-  <<: *ui_package
+docker-for-production:
+  extends: .docker-package
   dependencies:
-    - ui-for-mainnet
+    - ui-for-production
   variables:
+    TARGET: production
     CHAIN: mainnet
 
-docker-for-tobalaba:
-  <<: *ui_package
-  dependencies:
-    - ui-for-tobalaba
-  variables:
-    CHAIN: tobalaba
+
+deploy-to-stage:
+    extends: .deploy-tmpl
+    dependencies:
+      - docker-for-stage
+    only:
+      - /^v[0-9]+.[0-9]+.[0-9]+-(alpha|beta|rc)\.[0-9]+$/
+    variables:
+      TARGET: stage
+      CHAIN: goerli
 
 deploy-to-production:
-    stage: deploy
-    tags:
-    - short-jobs
-    only:
-        - tags
-    image: markuskeil/docker-and-rancher
+    extends: .deploy-tmpl
     dependencies:
-      - docker-for-mainnet
-      - docker-for-tobalaba
-    services:
-      - docker:dind
-    script:
-      - rancher-compose -p $CI_PROJECT_PATH_SLUG up -p -d -c --force-upgrade
+      - docker-for-production
+    only:
+      - /^v[0-9]+.[0-9]+.[0-9]+$/
+    variables:
+      TARGET: production
+      CHAIN: mainnet
 

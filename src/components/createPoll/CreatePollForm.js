@@ -80,6 +80,9 @@ class CreatePollForm extends Component {
       endDate = this.state.inputEndDate
 
     try {
+      // get metamask access
+      await this.props.web3Interface.initAccounts();
+      
       await createPoll(this.props.web3Interface, this.state.inputName, this.state.inputDescription, startDate, endDate, 0, this.state.inputYesNo)
     } catch (error) {
       alert("Something went wrong with your transaction\n" + error)
