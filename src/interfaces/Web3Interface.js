@@ -19,9 +19,10 @@ export default class Web3Service {
   //web3;
   //contract;
   constructor() {
-    if (window['ethereum']) {
-      this.web3 = new Web3(window['ethereum'])
-    } else if (window['web3']) {
+    if (typeof window.ethereum !== 'undefined'
+    || (typeof window.web3 !== 'undefined')) {
+      this.web3 = new Web3(window['ethereum'] || window.web3.currentProvider)
+    } else {
       this.web3 = new Web3(config.remoteProvider)
     }
 
