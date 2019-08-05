@@ -11,6 +11,7 @@
 
 import React, { Component } from 'react';
 import CreatePollForm from './CreatePollForm';
+import CreatePollNoMetamask from './CreatePollNoMetamask';
 class CreatePoll extends Component {
   render() {
     return (
@@ -19,7 +20,7 @@ class CreatePoll extends Component {
             <div className="container">
               <div className="columns is-centered">
                 <div className="column is-5-tablet is-6-desktop is-7-widescreen">
-                  <CreatePollForm web3Interface={this.props.web3Interface}/>
+                  {(typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined'))?<CreatePollForm web3Interface={this.props.web3Interface}/>:<CreatePollNoMetamask/>}
                 </div>
               </div>
             </div>
