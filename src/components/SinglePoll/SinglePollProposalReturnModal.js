@@ -25,7 +25,7 @@ class SinglePollProposalReturnModal extends Component {
         var dd = {
             content: [
                 {
-                    text: 'You signed vote',
+                    text: 'Your signed vote',
                     style: 'header'
                 },
                 JSON.stringify(this.props.response)
