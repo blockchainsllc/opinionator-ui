@@ -77,7 +77,7 @@ class App extends Component {
             {!this.state.chainHasPolls ? <Route exact path="/" render={() => <div style={{margin: '0 auto',width: '50vw',textAlign: 'center'}}>No Polls found on chain. Consider switching to a supported chain (Mainnet or Görli)</div>}></Route> : null}
 
             <Route exact path="/" render={() => <PollCollection polls={this.state.polls}/>}/>
-            <Route exact path="/createPoll" render={() => <CreatePoll web3Interface={this.state.web3Interface}/>}/>
+            <Route exact path="/createPoll" component={({history}) => <CreatePoll web3Interface={this.state.web3Interface} history={history}/>}/>
             <Route exact path="/collection/:id" component={(props) => <SinglePoll poll={this.state.polls.find(poll => poll.id === parseInt(props.match.params.id))} web3Interface={this.state.web3Interface}/>} />
             <Route exact path="/search" component={({history}) => <Search history={history} />} />
             <Route exact path="/search/:searchString" component={(props) => <SearchEntered polls={this.state.polls.filter((poll) => {

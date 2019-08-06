@@ -82,20 +82,25 @@ class CreatePollForm extends Component {
     try {
       // get metamask access
       await this.props.web3Interface.initAccounts();
-      
+
+      if(await this.props.web3Interface.web3.eth.net.getId() === 1)
+        alert("You are not mainnet. It might take a while.")
       await createPoll(this.props.web3Interface, this.state.inputName, this.state.inputDescription, startDate, endDate, 0, this.state.inputYesNo)
+      
+      this.setState({
+        inputName: '',
+        inputDescription: '',
+        inputStartDate: '',
+        inputEndDate: '',
+        inputYesNo: false,
+        buttonCreateActive: false
+      })
+
+      this.props.history.push('/')
+
     } catch (error) {
       alert("Something went wrong with your transaction\n" + error)
     }
-
-    this.setState({
-      inputName: '',
-      inputDescription: '',
-      inputStartDate: '',
-      inputEndDate: '',
-      inputYesNo: false,
-      buttonCreateActive: false
-    })
   }
 
   render() {
