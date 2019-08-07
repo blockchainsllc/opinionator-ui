@@ -13,6 +13,7 @@ import React, { Component } from 'react';
 import SinglePollProposal from './SinglePollProposal';
 import SinglePollPieChart from './SinglePollPieChart';
 import SinglePollSlider from './SinglePollSlider';
+import SinglePollProposalVotingModal from './SinglePollProposalVotingModal'
 import { getProposalData, sumValuesFromProposals } from '../../interfaces/DataInterface';
 import SinglePollAdminFunctions from './SinglePollAdminFunctions';
 import '../styles/SinglePoll.css'
@@ -26,6 +27,7 @@ class SinglePoll extends Component {
       pageLoaded: false,
       activeMetamaskAccount: '',
       showModal: false,
+      showVotingModal: false,
 
       coinSliderValue: 50,
       gasSliderValue: 50,
@@ -39,6 +41,8 @@ class SinglePoll extends Component {
     }
     this.getProposalDataFromInterface = this.getProposalDataFromInterface.bind(this)
     this.handleButtonAdminFunctionsOnClick = this.handleButtonAdminFunctionsOnClick.bind(this)
+    this.handleCloseVotingModal = this.handleCloseVotingModal.bind(this)
+    this.handleButtonVoteClicked = this.handleButtonVoteClicked.bind(this)
   }
 
   async componentDidMount() {
@@ -104,9 +108,22 @@ class SinglePoll extends Component {
     })
   }
 
+  handleCloseVotingModal() {
+    this.setState({
+      showVotingModal: false
+    })
+  }
+
+  handleButtonVoteClicked() {
+    this.setState({
+      showVotingModal: true
+    })
+  }
+
   render() {
     return (
       <div>
+      {this.state.showVotingModal ? < SinglePollProposalVotingModal pollTitle={this.props.poll.title} handleCloseVotingModal={this.handleCloseVotingModal} web3Interface={this.props.web3Interface} pollContractAddress={this.props.web3Interface.contractAddress} pollId={this.props.poll.id} proposalData={this.state.proposals}/> : null}
       {this.state.pageLoaded ? <section className="section">
         <div className="container has-gutter-top-bottom has-text-centered">
             <div className="title">{this.props.poll.title}</div>
@@ -117,7 +134,7 @@ class SinglePoll extends Component {
 
             {(this.props.poll.author === this.state.activeMetamaskAccount) && (this.props.poll.endDate === "0" || this.props.poll.endDate > Date.now() / 1000) ? <button className="button is-link" onClick={this.handleButtonAdminFunctionsOnClick}>Admin functions</button> : null}
             {this.state.showModal ? <SinglePollAdminFunctions handleButtonAdminFunctionsOnClick={this.handleButtonAdminFunctionsOnClick} isStandardPoll={this.props.poll.standardPoll} web3Interface={this.props.web3Interface} pollId={this.props.poll.id} /> : null}
-
+            <button className="button is-link is-medium" onClick={this.handleButtonVoteClicked}>Click here to vote</button>
             <section className="section">
             {this.state.proposals.map((proposal) => <SinglePollProposal proposalData={proposal} key={proposal.name} pollId={this.props.poll.id} endDate={this.props.poll.endDate} pollContractAddress={this.props.web3Interface.contractAddress} web3Interface={this.props.web3Interface} />)}
             </section>

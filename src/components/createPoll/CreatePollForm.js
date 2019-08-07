@@ -85,6 +85,7 @@ class CreatePollForm extends Component {
 
       if(await this.props.web3Interface.web3.eth.net.getId() === 1)
         alert("You are not mainnet. It might take a while.")
+        
       await createPoll(this.props.web3Interface, this.state.inputName, this.state.inputDescription, startDate, endDate, 0, this.state.inputYesNo)
       
       this.setState({
