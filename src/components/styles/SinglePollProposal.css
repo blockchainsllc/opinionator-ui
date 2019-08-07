@@ -10,7 +10,6 @@
 */
 
 .proposalBox-buttom-spacer { margin-bottom: 1rem; }
-
 .metamaskSign-button-spacer { margin-left: 1rem; }
 .metamaskSign-button-color { background-color: #FF8C00!important  }
 .vertical-center {
@@ -28,4 +27,6 @@
         border-left: 1px solid lightgray;
     }
   }
+
+.container-buttom-spacer { margin-bottom: 2rem; }
 /*.progressBar-color { background-color: #4C71FE!important }*/
