@@ -121,6 +121,7 @@ class SinglePoll extends Component {
   }
 
   render() {
+
     return (
       <div>
       {this.state.showVotingModal ? < SinglePollProposalVotingModal pollTitle={this.props.poll.title} handleCloseVotingModal={this.handleCloseVotingModal} web3Interface={this.props.web3Interface} pollContractAddress={this.props.web3Interface.contractAddress} pollId={this.props.poll.id} proposalData={this.state.proposals}/> : null}
@@ -148,7 +149,7 @@ class SinglePoll extends Component {
                     <div className="column is-6">
                         <div>
                             <div className="columns is-vcentered">
-                                <div className="column"> Gas </div>
+                                <div className="column has-text-left"> Gas </div>
                                 <div className="column is-8 no-padding">
                                   {this.state.gasSum.toString() !== "0"?
                                   <SinglePollSlider currentValue={this.state.gasSliderValue} onSliderChange={(e) => this.onGasSliderChange(e)}/>:
@@ -157,7 +158,7 @@ class SinglePoll extends Component {
                                 <div className="column is-tablet is-2"/>
                             </div>
                             <div className="columns is-vcentered">
-                                <div className="column"> Coins </div>
+                                <div className="column has-text-left"> Coins </div>
                                 <div className="column is-8 no-padding">
                                   {this.state.coinSum.toString() !== "0"?
                                   <SinglePollSlider currentValue={this.state.coinSliderValue} onSliderChange={(e) => this.onCoinSliderChange(e)}/>:
@@ -166,7 +167,7 @@ class SinglePoll extends Component {
                                 <div className="column is-tablet is-2"/>
                             </div>
                             <div className="columns is-vcentered">
-                                <div className="column"> Dev </div>
+                                <div className="column has-text-left"> Dev </div>
                                 <div className="column is-8 no-padding">
                                   {this.state.devSum.toString() !== "0"?
                                   <SinglePollSlider currentValue={this.state.devSliderValue} onSliderChange={(e) => this.onDevSliderChange(e)}/>:
@@ -175,7 +176,7 @@ class SinglePoll extends Component {
                                 <div className="column is-tablet is-2"/>
                             </div>
                             <div className="columns is-vcentered">
-                                <div className="column"> Miner </div>
+                                <div className="column has-text-left"> Miner </div>
                                 <div className="column is-8 no-padding">
                                   {this.state.minerSum.toString() !== "0"?
                                     <SinglePollSlider currentValue={this.state.minerSliderValue} onSliderChange={(e) => this.onMinerSliderChange(e)}/>:
@@ -188,8 +189,10 @@ class SinglePoll extends Component {
                     </div>
                 </div>
             </section>
+
         </div>
-      </section> : <section className="hero is-fullheight is-light">
+      </section> : 
+        <section className="hero is-fullheight is-light">
                 <div className="hero-body">
                     <div className="container">
                         <div className="columns is-centered">

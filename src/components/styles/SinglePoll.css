@@ -15,3 +15,12 @@
     padding-right: 0rem!important;
     padding-left: 0rem!important;
 }
+
+.history-column {
+    text-align: left;
+    color: darkgray;
+}
+
+.padding-section-top {
+    padding-top: 8rem!important;
+}

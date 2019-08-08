@@ -11,6 +11,7 @@
 
 import React, { Component } from 'react';
 import PollCollectionSinglePollLandingPage from './PollCollectionSinglePollLandingPage'
+import PollCollectionWelcomeModal from './PollCollectionWelcomeModal'
 import '../styles/PollCollection.css'
 
 
@@ -19,14 +20,20 @@ class PollCollection extends Component {
   constructor(props) {
     super(props);
     this.state = ({
-      maxPolls: []
+      maxPolls: [],
     })
+
+    this.handleCloseWelcomeModal = this.handleCloseWelcomeModal.bind(this)
   }
 
   componentDidMount() {
     this.setState({
       maxPolls: this.getTopPolls()
     })
+  }
+
+  handleCloseWelcomeModal() {
+    this.props.closeWelcomeModal()
   }
 
   getTopPolls() {
@@ -63,7 +70,8 @@ class PollCollection extends Component {
     return (
       <div>
         <div className="section container has-gutter-top-bottom">
-            <h1 className="title is-2 ">Top Polls</h1>
+            <h1 className="title is-3 ">Top Polls</h1>
+            {this.props.welcomeModalState?<PollCollectionWelcomeModal handleCloseWelcomeModal={this.handleCloseWelcomeModal}/>:null}
 <hr className="hr-page-breaker"/>
             <div className="tile is-ancestor tile-flexwrap">
             { /** TODO: Have to think about that, at least it works for now */ }
@@ -75,7 +83,7 @@ class PollCollection extends Component {
         </div>
 
         <div className="section container has-gutter-top-bottom">
-            <h1 className="title is-2 ">All Polls</h1>
+            <h1 className="title is-3 ">All Polls</h1>
             <hr className="hr-page-breaker"/>
             <div className="tile is-ancestor tile-flexwrap">
                 {this.props.polls.map((poll) => (<PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>))}
