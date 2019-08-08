@@ -11,6 +11,7 @@
 
 import React, { Component } from 'react';
 import "../styles/SinglePollProposal.css"
+import ReactTooltip from 'react-tooltip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPercentage, faGasPump, faCoins, faCogs, faCubes } from '@fortawesome/free-solid-svg-icons'
 
@@ -39,20 +40,24 @@ class SinglePollProposal extends Component {
                     {this.props.proposalData.percentage}
                 </div>
                 <div className="column">
-                    <FontAwesomeIcon icon={faGasPump} /> 
+                    <FontAwesomeIcon icon={faGasPump} data-tip data-for="gas"/> 
+                    <ReactTooltip place="top" type="dark" effect="float" id="gas">Amount of gas</ReactTooltip>
                     {this.props.proposalData.gas}
                 </div>
                 <div className="column">
-                    <FontAwesomeIcon icon={faCoins} /> 
+                    <FontAwesomeIcon icon={faCoins} data-tip data-for="coins"/> 
+                    <ReactTooltip place="top" type="dark" effect="float" id="coins">Amount of eth</ReactTooltip>
             { /**slice the last 18 digits to get eth instead of wei (not nice but simple enough (calculation is still accurate, only for display))*/ }
                     {this.props.proposalData.coin !== "0" && this.props.proposalData.coin.toString().length > 18 ? this.props.proposalData.coin.slice(0, -18) : "<1"}
                 </div>
                 <div className="column">
-                    <FontAwesomeIcon icon={faCogs} /> 
+                    <FontAwesomeIcon icon={faCogs} data-tip data-for="dev"/> 
+                    <ReactTooltip place="top" type="dark" effect="float" id="dev">Amount of gas on contracts</ReactTooltip> 
                     {this.props.proposalData.dev}
                 </div>
                 <div className="column">
-                    <FontAwesomeIcon icon={faCubes} /> 
+                    <FontAwesomeIcon icon={faCubes} data-tip data-for="miner"/> 
+                    <ReactTooltip place="top" type="dark" effect="float" id="miner">Total difficulty</ReactTooltip>
                     {this.props.proposalData.miner}
                 </div>
             </div>

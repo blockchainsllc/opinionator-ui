@@ -31,9 +31,11 @@ class App extends Component {
     this.state = {
       polls: [],
       web3Interface: new Web3Interface(),
-      chainHasPolls: true
+      chainHasPolls: true,
+      showWelcomeModal: true,
     };
     this.getPolls = this.getPolls.bind(this)
+    this.closeWelcomeModal = this.closeWelcomeModal.bind(this)
   }
 
   async componentDidMount() {
@@ -57,6 +59,12 @@ class App extends Component {
     })
   }
 
+  closeWelcomeModal() {
+    this.setState({
+      showWelcomeModal: false
+    })
+  }
+
   //collects a poll and stores it in the state array for polls
   async getPolls(pollId) {
     var pollObj = await getPoll(this.state.web3Interface, pollId);
@@ -76,7 +84,7 @@ class App extends Component {
 
             {!this.state.chainHasPolls ? <Route exact path="/" render={() => <div style={{margin: '0 auto',width: '50vw',textAlign: 'center'}}>No Polls found on chain. Consider switching to a supported chain (Mainnet or Görli)</div>}></Route> : null}
 
-            <Route exact path="/" render={() => <PollCollection polls={this.state.polls}/>}/>
+            <Route exact path="/" render={() => <PollCollection polls={this.state.polls} closeWelcomeModal={this.closeWelcomeModal} welcomeModalState={this.state.showWelcomeModal}/>}/>
             <Route exact path="/createPoll" component={({history}) => <CreatePoll web3Interface={this.state.web3Interface} history={history}/>}/>
             <Route exact path="/collection/:id" component={(props) => <SinglePoll poll={this.state.polls.find(poll => poll.id === parseInt(props.match.params.id))} web3Interface={this.state.web3Interface}/>} />
             <Route exact path="/search" component={({history}) => <Search history={history} />} />
