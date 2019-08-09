@@ -70,14 +70,14 @@ class SinglePollAdminFunctions extends Component {
                     <div className='field'>
                         <label className="label">Name</label>
                         <div className="control has-icon-left">
-                            <input className="input" type='text' placeholder='Enter proposal name' maxLength='20' value={this.state.inputName} onChange={this.handleChangeInputName} required/>
+                            <input className="input" type='text' placeholder='Enter proposal name' maxLength='20' value={this.state.inputName} onChange={this.handleChangeInputName} disabled={this.state.buttonCreateActive} required/>
                         </div>
                     </div>
 
                     <div className='field'>
                         <label className="label">Description</label>
                         <div className="control has-icon-left">
-                            <input className="textarea" type='text' placeholder='Enter description' maxLength='50' value={this.state.inputDescription} onChange={this.handleChangeInputDescription}/>
+                            <textarea className="textarea" type='text' placeholder='Enter description' maxLength='200' value={this.state.inputDescription} onChange={this.handleChangeInputDescription} disabled={this.state.buttonCreateActive}/>
                         </div>
                     </div>
 
