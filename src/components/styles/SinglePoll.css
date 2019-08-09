@@ -29,6 +29,10 @@
     color: darkgray;
 }
 
+.history-text {
+    color: darkgrey;
+}
+
 .padding-section-top {
     padding-top: 8rem!important;
 }

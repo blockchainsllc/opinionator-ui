@@ -20,6 +20,7 @@ import SinglePollProposal from './SinglePollProposal';
 import SinglePollPieChart from './SinglePollPieChart';
 import SinglePollSlider from './SinglePollSlider';
 import SinglePollProposalVotingModal from './SinglePollProposalVotingModal'
+import SinglePollHistory from './SinglePollHistory'
 import { getProposalData, sumValuesFromProposals } from '../../interfaces/DataInterface';
 import SinglePollAdminFunctions from './SinglePollAdminFunctions';
 import '../styles/SinglePoll.css'
@@ -195,7 +196,7 @@ class SinglePoll extends Component {
                     </div>
                 </div>
             </section>
-
+            <SinglePollHistory/>
         </div>
       </section> : 
         <section className="hero is-fullheight is-light">
@@ -209,6 +210,7 @@ class SinglePoll extends Component {
                     </div>
                 </div>
         </section>}
+        
       </div>
       );
   }
