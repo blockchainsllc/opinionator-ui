@@ -26,7 +26,6 @@ class SinglePollProposal extends Component {
   render() {
 
     const loadingScreen = <div></div>
-
     return (
       <div>
         {!this.props.proposalData ? loadingScreen :
@@ -43,7 +42,7 @@ class SinglePollProposal extends Component {
 
                 <div className="column">
                     <FontAwesomeIcon icon={faPercentage} /> 
-                    {this.props.proposalData.percentage}
+                    {isNaN(this.props.proposalData.percentage) ? "0" : this.props.proposalData.percentage}
                 </div>
                 <div className="column">
                     <FontAwesomeIcon icon={faGasPump} data-tip data-for="gas"/> 
@@ -70,7 +69,7 @@ class SinglePollProposal extends Component {
 
             <div className="columns">
                 <div className="column has-text-right">
-                    <progress className="progress is-link" value={this.props.proposalData.percentage} max="100"/>
+                    <progress className="progress is-link" value={isNaN(this.props.proposalData.percentage)?0:this.props.proposalData.percentage} max="100"/>
                 </div>
             </div>
 
