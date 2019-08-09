@@ -20,6 +20,7 @@ import SinglePollProposal from './SinglePollProposal';
 import SinglePollPieChart from './SinglePollPieChart';
 import SinglePollSlider from './SinglePollSlider';
 import SinglePollProposalVotingModal from './SinglePollProposalVotingModal'
+import SinglePollHistory from './SinglePollHistory'
 import { getProposalData, sumValuesFromProposals } from '../../interfaces/DataInterface';
 import SinglePollAdminFunctions from './SinglePollAdminFunctions';
 import '../styles/SinglePoll.css'
@@ -34,6 +35,7 @@ class SinglePoll extends Component {
       activeMetamaskAccount: '',
       showModal: false,
       showVotingModal: false,
+      proposalsExist: false,
 
       coinSliderValue: 50,
       gasSliderValue: 50,
@@ -74,10 +76,17 @@ class SinglePoll extends Component {
 
   async getProposalDataFromInterface(oldProposals) {
     const proposals = await getProposalData(this.props.web3Interface, this.props.poll.proposalIds, this.props.poll.votes, this.state.coinSliderValue, this.state.gasSliderValue, this.state.devSliderValue, this.state.minerSliderValue, oldProposals)
-    this.setState({
-      proposals: proposals,
-      pageLoaded: true,
-    })
+    if(proposals === undefined || proposals.length === 0)
+      this.setState({
+        proposals: proposals,
+        pageLoaded: true,
+      })
+    else
+      this.setState({
+        proposals: proposals,
+        pageLoaded: true,
+        proposalsExist: true,
+      })
   }
 
   onCoinSliderChange(e) {
@@ -138,13 +147,16 @@ class SinglePoll extends Component {
             <div>created by {this.props.poll.author}</div> 
             <div className="title is-4">{new Date(this.props.poll.startDate * 1000).toLocaleDateString()}  -  {this.props.poll.endDate !== "0" ? new Date(this.props.poll.endDate * 1000).toLocaleDateString() : "no enddate"}</div>
             <div className="title is-5">{this.props.poll.votes.length} Votes</div>
-
-            {(this.props.poll.author === this.state.activeMetamaskAccount) && (this.props.poll.endDate === "0" || this.props.poll.endDate > Date.now() / 1000) ? <button className="button is-link" onClick={this.handleButtonAdminFunctionsOnClick}>Admin functions</button> : null}
+            
+            {(this.props.poll.author === this.state.activeMetamaskAccount) && (this.props.poll.endDate === "0" || this.props.poll.endDate > Date.now() / 1000) ? <button className="button is-link is-medium" onClick={this.handleButtonAdminFunctionsOnClick}>Admin functions</button> : null}
             {this.state.showModal ? <SinglePollAdminFunctions handleButtonAdminFunctionsOnClick={this.handleButtonAdminFunctionsOnClick} isStandardPoll={this.props.poll.standardPoll} web3Interface={this.props.web3Interface} pollId={this.props.poll.id} /> : null}
-            <button className="button is-link is-medium" onClick={this.handleButtonVoteClicked}>Click here to vote</button>
+            <div className="yes-padding">
+              <button className="button is-link is-medium" onClick={this.handleButtonVoteClicked} disabled={!this.state.proposalsExist}>Click here to vote</button>
+            </div>
             <section className="section">
             {this.state.proposals.map((proposal) => <SinglePollProposal proposalData={proposal} key={proposal.name} pollId={this.props.poll.id} endDate={this.props.poll.endDate} pollContractAddress={this.props.web3Interface.contractAddress} web3Interface={this.props.web3Interface} />)}
             </section>
+            {this.state.proposalsExist?
             <section className="section">
                 <div className="columns is-vcentered">
                     <div className="column is-6">
@@ -195,7 +207,8 @@ class SinglePoll extends Component {
                     </div>
                 </div>
             </section>
-
+            :null}
+            <SinglePollHistory/>
         </div>
       </section> : 
         <section className="hero is-fullheight is-light">
@@ -209,6 +222,7 @@ class SinglePoll extends Component {
                     </div>
                 </div>
         </section>}
+        
       </div>
       );
   }

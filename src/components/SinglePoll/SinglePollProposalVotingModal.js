@@ -251,7 +251,7 @@ class SinglePollProposalVotingModal extends Component {
                   </div>}
                 </section>
                 <footer className="modal-card-foot">
-                  <button className="button is-success" onClick={this.handleClickNextStageButton}>Next</button>
+                  <button className="button is-link" onClick={this.handleClickNextStageButton}>Next</button>
                   <button className="button" onClick={this.props.handleCloseVotingModal}>Cancel</button>
                 </footer>
               </div>

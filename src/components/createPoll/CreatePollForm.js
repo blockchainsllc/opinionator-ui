@@ -117,34 +117,34 @@ class CreatePollForm extends Component {
             <div className='field'>
                 <label className="label">Name</label>
                 <div className="control has-icon-left">
-                    <input className="input" type='text' placeholder='Enter poll name' maxLength='20' value={this.state.inputName} onChange={this.handleInputName} required/>
+                    <input className="input" type='text' placeholder='Enter poll name' maxLength='20' value={this.state.inputName} onChange={this.handleInputName} disabled={this.state.buttonCreateActive} required/>
                 </div>
             </div>
 
             <div className='field'>
                 <label className="label">Description</label>
                 <div>
-                    <textarea className="textarea" type='text' placeholder='Enter poll description' value={this.state.inputDescription} onChange={this.handleInputDescription}/>
+                    <textarea className="textarea" type='text' placeholder='Enter poll description' value={this.state.inputDescription} onChange={this.handleInputDescription} disabled={this.state.buttonCreateActive}/>
                 </div>
             </div>
 
             <div className='field'>
                 <label className="label">Start Date</label>
                 <div>
-                    <input className="input" type='datetime-local' placeholder='Enter timestamp' value={this.state.inputStartDate} onChange={this.handleInputStartDate}/>
+                    <input className="input" type='datetime-local' placeholder='Enter timestamp' value={this.state.inputStartDate} onChange={this.handleInputStartDate} disabled={this.state.buttonCreateActive}/>
                 </div>
             </div>
 
             <div className='field'>
                 <label className="label">End Date</label>
                 <div>
-                    <input className="input" type='datetime-local' placeholder='Enter timestamp' value={this.state.inputEndDate} onChange={this.handleInputEndDate}/>
+                    <input className="input" type='datetime-local' placeholder='Enter timestamp' value={this.state.inputEndDate} onChange={this.handleInputEndDate} disabled={this.state.buttonCreateActive}/>
                 </div>
             </div>
 
             <div className="field">
                 <label className="checkbox">
-                    <input type="checkbox" value={this.state.inputYesNo} onChange={this.handleInputYesNo}/> Standard Yes/No Poll
+                    <input type="checkbox" value={this.state.inputYesNo} onChange={this.handleInputYesNo} disabled={this.state.buttonCreateActive}/> Standard Yes/No Poll
                 </label>
             </div>
 
