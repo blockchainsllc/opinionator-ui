@@ -29,6 +29,8 @@ import { getPoll, getPollAmount } from '../interfaces/DataInterface.js'
 import { getAmountOfVotesForPoll } from '../interfaces/DatabaseInterface.js'
 import Web3Interface from '../interfaces/Web3Interface.js'
 import ErrorBoundary from './ErrorBoundary';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 class App extends Component {
 
@@ -38,7 +40,7 @@ class App extends Component {
       polls: [],
       web3Interface: new Web3Interface(),
       chainHasPolls: true,
-      showWelcomeModal: true,
+      showWelcomeModal: false,
     };
     this.getPolls = this.getPolls.bind(this)
     this.closeWelcomeModal = this.closeWelcomeModal.bind(this)
@@ -56,6 +58,9 @@ class App extends Component {
     for (var i = 0; i < pollAmount; i++) {
       this.sleep(this.getPolls, i)
     }
+
+    if(cookies.get('ShowWelcomeModal')  !== 'FALSE')
+      this.setState({showWelcomeModal: true})
   }
 
   //allowes to call async functions after a certain time period
@@ -66,6 +71,7 @@ class App extends Component {
   }
 
   closeWelcomeModal() {
+    cookies.set('ShowWelcomeModal', 'FALSE', { path: '/' });
     this.setState({
       showWelcomeModal: false
     })
