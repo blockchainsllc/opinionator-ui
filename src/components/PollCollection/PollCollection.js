@@ -18,7 +18,9 @@
 import React, { Component } from 'react';
 import PollCollectionSinglePollLandingPage from './PollCollectionSinglePollLandingPage'
 import PollCollectionWelcomeModal from './PollCollectionWelcomeModal'
+import config from '../../config.json';
 import '../styles/PollCollection.css'
+import PollCollectionWrongNetwork from './PollCollectionWronNetwork';
 
 
 class PollCollection extends Component {
@@ -27,14 +29,16 @@ class PollCollection extends Component {
     super(props);
     this.state = ({
       maxPolls: [],
+      netID: 0
     })
 
     this.handleCloseWelcomeModal = this.handleCloseWelcomeModal.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.setState({
-      maxPolls: this.getTopPolls()
+      maxPolls: this.getTopPolls(),
+      netID: await this.props.web3Interface.web3.eth.net.getId(),
     })
   }
 
@@ -75,27 +79,31 @@ class PollCollection extends Component {
 
     return (
       <div>
-        <div className="section container has-gutter-top-bottom">
-            <h1 className="title is-3 ">Top Polls</h1>
-            {this.props.welcomeModalState?<PollCollectionWelcomeModal handleCloseWelcomeModal={this.handleCloseWelcomeModal}/>:null}
-<hr className="hr-page-breaker"/>
-            <div className="tile is-ancestor tile-flexwrap">
-            { /** TODO: Have to think about that, at least it works for now */ }
-                {maxPolls[0] !== undefined ? maxPolls.filter((poll) => {
-        if (poll) return true
-        else return false
-      }).map((poll) => ( <PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>)) : null}
-            </div>
-        </div>
+        {(this.state.netID === config.network)?
+        <div>
+          <div className="section container has-gutter-top-bottom">
+              <h1 className="title is-3 ">Top Polls</h1>
+              {this.props.welcomeModalState?<PollCollectionWelcomeModal handleCloseWelcomeModal={this.handleCloseWelcomeModal}/>:null}
+              <hr className="hr-page-breaker"/>
+              <div className="tile is-ancestor tile-flexwrap">
+              { /** TODO: Have to think about that, at least it works for now */ }
+                  {maxPolls[0] !== undefined ? maxPolls.filter((poll) => {
+                    if (poll) return true
+                    else return false
+                  }).map((poll) => ( <PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>)) : null}
+              </div>
+          </div>
 
-        <div className="section container has-gutter-top-bottom">
-            <h1 className="title is-3 ">All Polls</h1>
-            <hr className="hr-page-breaker"/>
-            <div className="tile is-ancestor tile-flexwrap">
-                {this.props.polls.map((poll) => (<PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>))}
+          <div className="section container has-gutter-top-bottom">
+              <h1 className="title is-3 ">All Polls</h1>
+              <hr className="hr-page-breaker"/>
+              <div className="tile is-ancestor tile-flexwrap">
+                  {this.props.polls.map((poll) => (<PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>))}
 
-            </div>
+              </div>
+          </div>
         </div>
+        :<PollCollectionWrongNetwork/>}
     </div>
       );
   }

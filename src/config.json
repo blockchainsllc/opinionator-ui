@@ -4,5 +4,5 @@
     "version": "v0.0.0",
     "remoteProvider": "https://rpc.slock.it/goerli/archive-one",
     "environment":"local",
-    "network":"goerli"
+    "network":5
 }

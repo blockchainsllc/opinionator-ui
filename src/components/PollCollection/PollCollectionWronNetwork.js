@@ -18,15 +18,25 @@
 import React, { Component } from 'react';
 import config from '../../config.json';
 
-class CreatePollWrongNetwork extends Component {
+class PollCollectionWrongNetwork extends Component {
     render(){
         return(
-        <div className="content">
-            <h1>Wrong Network selected</h1>
-            <p>This website is for {config.network === 1 ? "mainnet" : config.network === 5 ? "goerli" : "unknown network"}. Please change the network settings in your Metamask.</p>
-        </div>
+            <section className="hero is-fullheight is-light">
+              <div className="hero-body">
+                <div className="container">
+                  <div className="columns is-centered">
+                    <div className="column is-5-tablet is-6-desktop is-7-widescreen">
+                    <div className="content">
+                      <h1>Wrong Network selected</h1>
+                        <p>This website is for {config.network === 1 ? "mainnet" : config.network === 5 ? "goerli" : "unknown network"}. Please change the network settings in your Metamask.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
         )
     }
 }
 
-export default CreatePollWrongNetwork;
+export default PollCollectionWrongNetwork;
