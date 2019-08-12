@@ -18,7 +18,21 @@
 import React, { Component } from 'react';
 import CreatePollForm from './CreatePollForm';
 import CreatePollNoMetamask from './CreatePollNoMetamask';
+import CreatePollWrongNetwork from './CreatePollWrongNetwork';
 class CreatePoll extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      netID: 0,
+    }
+  }
+
+  async componentDidMount() {
+    this.setState({
+      netID: await this.props.web3Interface.web3.eth.net.getId(),
+    })
+  }
   render() {
     return (
       <section className="hero is-fullheight is-light">
@@ -26,7 +40,7 @@ class CreatePoll extends Component {
             <div className="container">
               <div className="columns is-centered">
                 <div className="column is-5-tablet is-6-desktop is-7-widescreen">
-                  {(typeof window.ethereum !== 'undefined' || (typeof window.web3 !== 'undefined'))?<CreatePollForm web3Interface={this.props.web3Interface} history={this.props.history}/>:<CreatePollNoMetamask/>}
+                  {(((typeof window.ethereum !== 'undefined') || (typeof window.web3 !== 'undefined')))?(this.state.netID === 1 || this.state.netID === 5)?<CreatePollForm web3Interface={this.props.web3Interface} history={this.props.history}/>:<CreatePollWrongNetwork/>:<CreatePollNoMetamask/>}
                 </div>
               </div>
             </div>
