@@ -235,7 +235,7 @@ class SinglePollProposalVotingModal extends Component {
                   <div className="container">
                   <label className="label">How do you want to sign your vote?</label>
                   <div className="select">
-                      <select onChange={this.handleSelectSigningMethod}>
+                      <select onChange={this.handleSelectSigningMethod} value={this.state.selectedSigningMethod}>
                           <option>with Metamask</option>
                           <option>Manual Signing</option>
                       </select>
