@@ -87,7 +87,7 @@ class CreatePollForm extends Component {
 
     try {
       // get metamask access
-      await this.props.web3Interface.initAccounts();
+      await window['ethereum'].enable();
 
       if(await this.props.web3Interface.web3.eth.net.getId() === 1)
         alert("You are not mainnet. It might take a while.")

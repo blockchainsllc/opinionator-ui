@@ -16,38 +16,27 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import React, { Component } from 'react';
-import CreatePollForm from './CreatePollForm';
-import CreatePollNoMetamask from './CreatePollNoMetamask';
-import CreatePollWrongNetwork from './CreatePollWrongNetwork';
-class CreatePoll extends Component {
+import config from '../../config.json';
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      netID: 0,
-    }
-  }
-
-  async componentDidMount() {
-    this.setState({
-      netID: await this.props.web3Interface.web3.eth.net.getId(),
-    })
-  }
-  render() {
-    return (
-      <section className="hero is-fullheight is-light">
-          <div className="hero-body">
-            <div className="container">
-              <div className="columns is-centered">
-                <div className="column is-5-tablet is-6-desktop is-7-widescreen">
-                  {(((typeof window.ethereum !== 'undefined') || (typeof window.web3 !== 'undefined')))?(this.state.netID === 1 || this.state.netID === 5)?<CreatePollForm web3Interface={this.props.web3Interface} history={this.props.history}/>:<CreatePollWrongNetwork/>:<CreatePollNoMetamask/>}
+class PollCollectionWrongNetwork extends Component {
+    render(){
+        return(
+            <section className="hero is-fullheight is-light">
+              <div className="hero-body">
+                <div className="container">
+                  <div className="columns is-centered">
+                    <div className="column is-5-tablet is-6-desktop is-7-widescreen">
+                    <div className="content">
+                      <h1>Wrong Network selected</h1>
+                        <p>This website is for {config.network === 1 ? "mainnet" : config.network === 5 ? "goerli" : "unknown network"}. Please change the network settings in your Metamask.</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-      );
-  }
+            </section>
+        )
+    }
 }
 
-export default CreatePoll;
+export default PollCollectionWrongNetwork;
