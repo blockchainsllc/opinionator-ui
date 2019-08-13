@@ -19,9 +19,24 @@ import React, { Component } from 'react';
 import "../styles/SinglePollProposal.css"
 import ReactTooltip from 'react-tooltip'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPercentage, faGasPump, faCoins, faCogs, faCubes } from '@fortawesome/free-solid-svg-icons'
+import { faPercentage, faGasPump, faCoins, faCogs, faCubes, faAngleUp, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 
 class SinglePollProposal extends Component {
+
+  constructor(props) {
+      super(props)
+      this.state = {
+          expanded: false,
+      }
+
+      this.handleClickOnProposalBox = this.handleClickOnProposalBox.bind(this)
+  }
+
+  handleClickOnProposalBox() {
+      this.setState({
+          expanded: !this.state.expanded,
+      })
+  }
 
   render() {
 
@@ -29,7 +44,7 @@ class SinglePollProposal extends Component {
     return (
       <div>
         {!this.props.proposalData ? loadingScreen :
-        <div className="box proposalBox-buttom-spacer" >
+        <div className="box proposalBox-buttom-spacer" onClick={this.handleClickOnProposalBox}>
             <div className="columns">
                 <div className="column has-text-left is-2">
                     <div className="title is-5">{this.props.proposalData.name}</div>
@@ -37,42 +52,48 @@ class SinglePollProposal extends Component {
                 <div className="column has-text-left">
                     <div>{this.props.proposalData.description}</div>
                 </div>
+                <div className="column is-1 has-text-right">
+                    {this.state.expanded ? <FontAwesomeIcon icon={faAngleUp}/> : <FontAwesomeIcon icon={faAngleDown}/>}
+                </div>
             </div>
-            <div className="columns">
 
-                <div className="column">
+            <div className="columns">
+                <div className="column is-1">
                     <FontAwesomeIcon icon={faPercentage} /> 
                     {isNaN(this.props.proposalData.percentage) ? "0" : this.props.proposalData.percentage}
                 </div>
-                <div className="column  has-text-left">
-                    <FontAwesomeIcon icon={faGasPump} data-tip data-for="gas"/> 
-                    <ReactTooltip place="top" type="dark" effect="float" id="gas">Amount of gas</ReactTooltip>
-                    {this.props.proposalData.gas}
-                </div>
-                <div className="column has-text-left">
-                    <FontAwesomeIcon icon={faCoins} data-tip data-for="coins"/> 
-                    <ReactTooltip place="top" type="dark" effect="float" id="coins">Amount of eth</ReactTooltip>
-            { /**slice the last 18 digits to get eth instead of wei (not nice but simple enough (calculation is still accurate, only for display))*/ }
-                    {this.props.proposalData.coin !== "0" && this.props.proposalData.coin.toString().length > 18 ? this.props.proposalData.coin.slice(0, -18) : "<1"}
-                </div>
-                <div className="column has-text-left">
-                    <FontAwesomeIcon icon={faCogs} data-tip data-for="dev"/> 
-                    <ReactTooltip place="top" type="dark" effect="float" id="dev">Amount of gas on contracts</ReactTooltip> 
-                    {this.props.proposalData.dev}
-                </div>
-                <div className="column has-text-left">
-                    <FontAwesomeIcon icon={faCubes} data-tip data-for="miner"/> 
-                    <ReactTooltip place="top" type="dark" effect="float" id="miner">Total difficulty</ReactTooltip>
-                    {this.props.proposalData.miner}
-                </div>
-            </div>
-
-            <div className="columns">
                 <div className="column has-text-right">
                     <progress className="progress is-link" value={isNaN(this.props.proposalData.percentage)?0:this.props.proposalData.percentage} max="100"/>
                 </div>
             </div>
 
+            {this.state.expanded?
+            <div className="container">
+                <div className="columns">
+                    <div className="column">
+                        <FontAwesomeIcon icon={faGasPump} data-tip data-for="gas"/> 
+                        <ReactTooltip place="top" type="dark" effect="float" id="gas">Amount of gas</ReactTooltip>
+                        {this.props.proposalData.gas}
+                    </div>
+                    <div className="column">
+                        <FontAwesomeIcon icon={faCoins} data-tip data-for="coins"/> 
+                        <ReactTooltip place="top" type="dark" effect="float" id="coins">Amount of eth</ReactTooltip>
+                        { /**slice the last 18 digits to get eth instead of wei (not nice but simple enough (calculation is still accurate, only for display))*/ }
+                        {this.props.proposalData.coin !== "0" && this.props.proposalData.coin.toString().length > 18 ? this.props.proposalData.coin.slice(0, -18) : "<1"}
+                    </div>
+                    <div className="column">
+                        <FontAwesomeIcon icon={faCogs} data-tip data-for="dev"/> 
+                        <ReactTooltip place="top" type="dark" effect="float" id="dev">Amount of gas on contracts</ReactTooltip> 
+                        {this.props.proposalData.dev}
+                    </div>
+                    <div className="column">
+                        <FontAwesomeIcon icon={faCubes} data-tip data-for="miner"/> 
+                        <ReactTooltip place="top" type="dark" effect="float" id="miner">Total difficulty</ReactTooltip>
+                        {this.props.proposalData.miner}
+                    </div>
+                </div>
+                </div>
+            :null}
         </div>
       }
       </div>
