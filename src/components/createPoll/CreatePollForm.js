@@ -17,7 +17,6 @@
 
 import React, { Component } from 'react';
 import { createPoll } from '../../interfaces/DataInterface'
-import LoadingModal from './LoadingModal'
 
 class CreatePollForm extends Component {
 
@@ -113,8 +112,6 @@ class CreatePollForm extends Component {
 
   render() {
     return (
-      <div>
-        {this.state.buttonCreateActive?<LoadingModal/>:
       <form className="box">
       <label className="label is-large">Create Poll</label>
             <div className='field'>
@@ -127,7 +124,7 @@ class CreatePollForm extends Component {
             <div className='field'>
                 <label className="label">Description</label>
                 <div>
-                    <textarea className="textarea has-fixed-size" type='text' placeholder='Enter poll description' value={this.state.inputDescription} onChange={this.handleInputDescription} disabled={this.state.buttonCreateActive}/>
+                    <textarea className="textarea" type='text' placeholder='Enter poll description' value={this.state.inputDescription} onChange={this.handleInputDescription} disabled={this.state.buttonCreateActive}/>
                 </div>
             </div>
 
@@ -158,8 +155,7 @@ class CreatePollForm extends Component {
                 </button>
                 </div>
             </div>
-        </form>}
-        </div>
+        </form>
       );
   }
 }
