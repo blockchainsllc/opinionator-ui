@@ -145,7 +145,7 @@ class SinglePoll extends Component {
             <div className="title">{this.props.poll.title}</div>
             <div className="subtitle">{this.props.poll.description}</div>
             <div>created by {this.props.poll.author}</div> 
-            <div className="title is-4">{new Date(this.props.poll.startDate * 1000).toLocaleDateString()}  -  {this.props.poll.endDate !== "0" ? new Date(this.props.poll.endDate * 1000).toLocaleDateString() : "no enddate"}</div>
+            <div className="title is-4">{new Date(this.props.poll.startDate * 1000).toLocaleDateString()}  -  {this.props.poll.endDate !== "0" ? new Date(this.props.poll.endDate * 1000).toLocaleDateString() : "no end date"}</div>
             <div className="title is-5">{this.props.poll.votes.length} Votes</div>
             
             {(this.props.poll.author === this.state.activeMetamaskAccount) && (this.props.poll.endDate === "0" || this.props.poll.endDate > Date.now() / 1000) ? <button className="button is-link is-medium" onClick={this.handleButtonAdminFunctionsOnClick}>Admin functions</button> : null}

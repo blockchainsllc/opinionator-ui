@@ -309,8 +309,8 @@ class SinglePollProposalVotingModal extends Component {
                 <section className="modal-card-body">
                         <div className="section">
                             <section>
-                                <div className="title">Voting Successfull</div>
-                                <div>Thank you for participating! For your safety we signed your vote so you can know that we have it. klick <button onClick={this.clickDownloadButton}>here</button> to download the pdf.</div>
+                                <div className="title">Voting Successful</div>
+                                <div>Thank you for participating! For your safety we signed your vote so you can know that we have it. Click <button onClick={this.clickDownloadButton}>here</button> to download the pdf.</div>
                             </section>
                         </div>
                     </section>
