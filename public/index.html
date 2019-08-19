@@ -33,6 +33,22 @@
     <title>Slock.it Opinionator</title>
   </head>
   <body>
+      <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+      <script>
+      window.cookieconsent.initialise({
+        "palette": {
+          "popup": {
+            "background": "#343a40"
+          },
+          "button": {
+            "background": "#3273dc;"
+          }
+        },
+        "content": {
+          "href": "https://slock.it/cookie-policy/"
+        }
+      });
+      </script>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
@@ -47,21 +63,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
-    <script>
-    window.cookieconsent.initialise({
-      "palette": {
-        "popup": {
-          "background": "#343a40"
-        },
-        "button": {
-          "background": "#17a2b8"
-        }
-      },
-      "content": {
-        "href": "https://slock.it/cookie-policy/"
-      }
-    });
-    </script>
+
   </body>
 </html>
