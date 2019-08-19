@@ -124,7 +124,7 @@ class CreatePollForm extends Component {
             <div className='field'>
                 <label className="label">Description</label>
                 <div>
-                    <textarea className="textarea" type='text' placeholder='Enter poll description' value={this.state.inputDescription} onChange={this.handleInputDescription} disabled={this.state.buttonCreateActive}/>
+                    <textarea className="textarea has-fixed-size" type='text' placeholder='Enter poll description' value={this.state.inputDescription} onChange={this.handleInputDescription} disabled={this.state.buttonCreateActive}/>
                 </div>
             </div>
 
