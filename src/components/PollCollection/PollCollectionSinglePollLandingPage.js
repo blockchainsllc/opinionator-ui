@@ -27,13 +27,13 @@ class PollCollectionSinglePollLandingPage extends Component {
   render() {
     return (
       <div className="tile is-parent">
-        <div className="tile is-child button">
+        <div className="tile is-child button hover-color " >
                 <Link to={{
         pathname: '/collection/' + this.props.pollData.id
       }}>
-                <div className="title is-3 top-gutter">{this.props.pollData.title}</div>
+                <div className="title is-4 top-gutter childTitle">{this.props.pollData.title}</div>
             
-            <div className="title is-5 bottom-gutter has-text-grey">votes: {this.props.pollData.votes.length}</div>
+            <div className="title is-5 bottom-gutter has-text-grey childText">votes: {this.props.pollData.votes.length}</div>
             </Link>
         </div>
       </div>
