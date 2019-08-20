@@ -50,20 +50,20 @@ class PollCollectionWelcomeModal extends Component{
                 <section className="modal-card-body">
                     <div className="content">
                         <h3>
-                            Welcome to the opinionator! A few things you need to know before we start:
+                            Welcome to the Opinionator! A few things you need to know before we start:
                         </h3>
                         <ol>
-                            <li>We dont store any of your private key information :)</li>
+                            <li>We don't store any of your private key information :)</li>
                             <li>We do however store your vote. You will get a receipt for that.</li>
-                            <li>If you dont know what this tool is doing, continue reading</li>
+                            <li>If you don't know what this tool is doing, continue reading</li>
                         </ol>
                         <p>
-                            This tool was created to measure in many different ways how the comunity thinks. We have chosen 4 key indicators
+                            This tool was created to measure in many different ways how the community thinks. We have chosen 4 key indicators
                             that are detractable from the blockchain to measure that. Following is an explanation of all 4 of these:
                         </p>
                         <p><FontAwesomeIcon icon={faGasPump} /> Gas Voting</p>
                         <p>
-                        Here all gas that was spend on the addresses that voted are counted together.
+                        Here all the gas that was spent on the addresses that voted is counted together.
                         </p>
                         <p><FontAwesomeIcon icon={faCoins} /> Coin Voting</p>
                         <p>
@@ -71,11 +71,11 @@ class PollCollectionWelcomeModal extends Component{
                         </p>
                         <p><FontAwesomeIcon icon={faCogs} /> Developer Voting</p>
                         <p>
-                        All gas that someone spend on a contract which was created by on of the voting addresses is counted here.
+                        All gas that someone spent on a contract which was created by one of the voting addresses is counted here.
                         </p>
                         <p><FontAwesomeIcon icon={faCubes} /> Miner Voting</p>
                         <p>
-                        Summed difficulty of every block mined by the voting addresses.
+                        The summed difficulty of every block mined by the voting addresses.
                         </p>
                         <Waypoint onEnter={this.handleWaypointEnter}/>
                     </div>
