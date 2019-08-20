@@ -82,9 +82,10 @@ class PollCollection extends Component {
         {(this.state.netID === config.network)?
         <div>
           <div className="section container has-gutter-top-bottom">
-              <h1 className="title is-3 ">Top Polls</h1>
+              <h1 className="title is-4 has-text-centered">Top Polls</h1>
               {this.props.welcomeModalState?<PollCollectionWelcomeModal handleCloseWelcomeModal={this.handleCloseWelcomeModal}/>:null}
-              <hr className="hr-page-breaker"/>
+              
+              <div className="box box-grey">
               <div className="tile is-ancestor tile-flexwrap">
               { /** TODO: Have to think about that, at least it works for now */ }
                   {maxPolls[0] !== undefined ? maxPolls.filter((poll) => {
@@ -92,14 +93,15 @@ class PollCollection extends Component {
                     else return false
                   }).map((poll) => ( <PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>)) : null}
               </div>
+              </div>
           </div>
 
           <div className="section container has-gutter-top-bottom">
-              <h1 className="title is-3 ">All Polls</h1>
-              <hr className="hr-page-breaker"/>
+              <h1 className="title is-4 has-text-centered">All Polls</h1>
+              <div className="box box-grey">
               <div className="tile is-ancestor tile-flexwrap">
                   {this.props.polls.map((poll) => (<PollCollectionSinglePollLandingPage key={poll.id} pollData={poll}/>))}
-
+              </div>
               </div>
           </div>
         </div>

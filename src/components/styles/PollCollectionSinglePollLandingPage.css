@@ -28,3 +28,15 @@
 .background-box {
     background-color: rgb(176, 176, 176)
 }
+
+.hover-color:hover {
+    background-color: hsl(217, 71%, 53%);
+}
+
+.hover-color:hover .childTitle{
+    color: white!important;
+}
+
+.hover-color:hover .childText{
+    color: lightgrey!important;
+}
