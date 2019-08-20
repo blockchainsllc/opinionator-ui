@@ -1,6 +1,6 @@
 {
     "api": "https://voting.stage.slock.it/api",
-    "contractAddress": "0x7cb0791fb8286e7ba38e14eca4fc0851967313ca",
+    "contractAddress": "0x624956467d410fa2f955d43c7bec5d4827e2e40c",
     "version": "v0.0.0",
     "remoteProvider": "https://rpc.slock.it/goerli/",
     "environment":"local",

@@ -1,6 +1,6 @@
 {
     "api": "https://voting.slock.it/api",
-    "contractAddress": "0x88c9c5acA173605E528B1B44171147C41EE956D2",
+    "contractAddress": "0x712858C26e0361a3241e3D88CecFBc1fb446b224",
     "version": "v0.0.0",
     "remoteProvider": "https://rpc.slock.it/mainnet/",
     "environment":"production",
