@@ -1,4 +1,3 @@
-/*
 // This file is part of the opinionator project
 
 // Copyright (C) 2019  Jonas Bentke <jonas@slock.it>, Slock.it GmbH
@@ -15,31 +14,29 @@
 // [Permissions of this strong copyleft license are conditioned on making available complete source code of licensed works and modifications, which include larger works using a licensed work, under the same license. Copyright and license notices must be preserved. Contributors provide an express grant of patent rights.]
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
 
-.no-padding {
-    padding-bottom: 0.3rem!important;
-    padding-top: 0.3rem!important;
-    padding-right: 0rem!important;
-    padding-left: 0rem!important;
+import React, { Component } from 'react';
+import config from '../../config.json';
+
+class PollCollectionWrongNetwork extends Component {
+    render(){
+        return(
+            <section className="hero is-fullheight is-light">
+              <div className="hero-body">
+                <div className="container">
+                  <div className="columns is-centered">
+                    <div className="column is-5-tablet is-6-desktop is-7-widescreen">
+                    <div className="content">
+                      <h1>Wrong Network selected</h1>
+                        <p>This website is for {config.network === 1 ? "mainnet" : config.network === 5 ? "goerli" : "unknown network"}. Please change the network settings in your Metamask.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+        )
+    }
 }
 
-.yes-padding {
-    padding-bottom: 0.3rem!important;
-    padding-top: 0.3rem!important;
-    padding-right: 0.3rem!important;
-    padding-left: 0.3rem!important;
-}
-
-.history-column {
-    text-align: left;
-    color: darkgray;
-}
-
-.history-text {
-    color: darkgrey;
-}
-
-.padding-section-top {
-    padding-top: 8rem!important;
-}
+export default PollCollectionWrongNetwork;
