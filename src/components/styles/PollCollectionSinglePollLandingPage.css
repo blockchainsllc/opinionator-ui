@@ -40,3 +40,7 @@
 .hover-color:hover .childText{
     color: lightgrey!important;
 }
+
+.button-height {
+    height: 150px!important;
+}

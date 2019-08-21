@@ -27,7 +27,7 @@ class PollCollectionSinglePollLandingPage extends Component {
   render() {
     return (
       <div className="tile is-parent">
-        <div className="tile is-child button hover-color " >
+        <div className="tile is-child button hover-color button-height" >
                 <Link to={{
         pathname: '/collection/' + this.props.pollData.id
       }}>
