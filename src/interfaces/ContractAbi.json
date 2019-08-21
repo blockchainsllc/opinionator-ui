@@ -1,116 +1,20 @@
 [
 	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "proposals",
-		"outputs": [
-			{
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"name": "description",
-				"type": "string"
-			},
-			{
-				"name": "author",
-				"type": "address"
-			},
-			{
-				"name": "pollId",
-				"type": "uint256"
-			},
-			{
-				"name": "activated",
-				"type": "bool"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
 		"constant": false,
 		"inputs": [
 			{
-				"name": "_proposalName",
-				"type": "string"
-			},
-			{
-				"name": "_proposalDescription",
-				"type": "string"
+				"name": "_proposalId",
+				"type": "uint256"
 			},
 			{
 				"name": "_pollId",
 				"type": "uint256"
 			}
 		],
-		"name": "createProposal",
+		"name": "activateProposal",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "_pollId",
-				"type": "uint256"
-			}
-		],
-		"name": "getPoll",
-		"outputs": [
-			{
-				"components": [
-					{
-						"name": "name",
-						"type": "string"
-					},
-					{
-						"name": "description",
-						"type": "string"
-					},
-					{
-						"name": "proposalIds",
-						"type": "uint256[]"
-					},
-					{
-						"name": "author",
-						"type": "address"
-					},
-					{
-						"name": "allowProposalUpdate",
-						"type": "bool"
-					},
-					{
-						"name": "startDate",
-						"type": "uint256"
-					},
-					{
-						"name": "endDate",
-						"type": "uint256"
-					},
-					{
-						"name": "votingChoice",
-						"type": "uint8"
-					},
-					{
-						"name": "standardPoll",
-						"type": "bool"
-					}
-				],
-				"name": "",
-				"type": "tuple"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -148,51 +52,87 @@
 		"type": "function"
 	},
 	{
-		"constant": true,
+		"constant": false,
 		"inputs": [
 			{
-				"name": "",
+				"name": "_proposalName",
+				"type": "string"
+			},
+			{
+				"name": "_proposalDescription",
+				"type": "string"
+			},
+			{
+				"name": "_pollId",
 				"type": "uint256"
 			}
 		],
-		"name": "polls",
-		"outputs": [
+		"name": "createProposal",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
 			{
-				"name": "name",
-				"type": "string"
+				"indexed": true,
+				"name": "proposalId",
+				"type": "uint256"
 			},
 			{
-				"name": "description",
-				"type": "string"
-			},
-			{
-				"name": "author",
+				"indexed": true,
+				"name": "proposalAuthor",
 				"type": "address"
 			},
 			{
-				"name": "allowProposalUpdate",
-				"type": "bool"
-			},
-			{
-				"name": "startDate",
+				"indexed": true,
+				"name": "pollId",
 				"type": "uint256"
-			},
-			{
-				"name": "endDate",
-				"type": "uint256"
-			},
-			{
-				"name": "votingChoice",
-				"type": "uint8"
-			},
-			{
-				"name": "standardPoll",
-				"type": "bool"
 			}
 		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
+		"name": "LogCreateProposal",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "pollId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"name": "pollAuthor",
+				"type": "address"
+			}
+		],
+		"name": "LogCreatePoll",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "pollId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"name": "proposalId",
+				"type": "uint256"
+			},
+			{
+				"indexed": true,
+				"name": "proposalAuthor",
+				"type": "address"
+			}
+		],
+		"name": "LogProposalActivated",
+		"type": "event"
 	},
 	{
 		"constant": true,
@@ -202,11 +142,45 @@
 				"type": "uint256"
 			}
 		],
-		"name": "getProposalsFromPoll",
+		"name": "getPoll",
 		"outputs": [
 			{
+				"components": [
+					{
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"name": "description",
+						"type": "string"
+					},
+					{
+						"name": "proposalIds",
+						"type": "uint256[]"
+					},
+					{
+						"name": "author",
+						"type": "address"
+					},
+					{
+						"name": "standardPoll",
+						"type": "bool"
+					},
+					{
+						"name": "startDate",
+						"type": "uint256"
+					},
+					{
+						"name": "endDate",
+						"type": "uint256"
+					},
+					{
+						"name": "votingChoice",
+						"type": "uint8"
+					}
+				],
 				"name": "",
-				"type": "uint256[]"
+				"type": "tuple"
 			}
 		],
 		"payable": false,
@@ -238,20 +212,24 @@
 		"name": "getProposal",
 		"outputs": [
 			{
-				"name": "",
+				"name": "name",
 				"type": "string"
 			},
 			{
-				"name": "",
+				"name": "description",
 				"type": "string"
 			},
 			{
-				"name": "",
+				"name": "author",
 				"type": "address"
 			},
 			{
-				"name": "",
+				"name": "pollId",
 				"type": "uint256"
+			},
+			{
+				"name": "activated",
+				"type": "bool"
 			}
 		],
 		"payable": false,
@@ -259,82 +237,100 @@
 		"type": "function"
 	},
 	{
-		"constant": false,
+		"constant": true,
 		"inputs": [
-			{
-				"name": "_proposalId",
-				"type": "uint256"
-			},
 			{
 				"name": "_pollId",
 				"type": "uint256"
 			}
 		],
-		"name": "activateProposal",
-		"outputs": [],
+		"name": "getProposalsFromPoll",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
 		"payable": false,
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
-		"anonymous": false,
+		"constant": true,
 		"inputs": [
 			{
-				"indexed": false,
-				"name": "proposalId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "proposalAuthor",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"name": "pollId",
+				"name": "",
 				"type": "uint256"
 			}
 		],
-		"name": "LogCreateProposal",
-		"type": "event"
+		"name": "polls",
+		"outputs": [
+			{
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"name": "author",
+				"type": "address"
+			},
+			{
+				"name": "standardPoll",
+				"type": "bool"
+			},
+			{
+				"name": "startDate",
+				"type": "uint256"
+			},
+			{
+				"name": "endDate",
+				"type": "uint256"
+			},
+			{
+				"name": "votingChoice",
+				"type": "uint8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	},
 	{
-		"anonymous": false,
+		"constant": true,
 		"inputs": [
 			{
-				"indexed": false,
-				"name": "pollId",
+				"name": "",
 				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "pollAuthor",
-				"type": "address"
 			}
 		],
-		"name": "LogCreatePoll",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
+		"name": "proposals",
+		"outputs": [
 			{
-				"indexed": false,
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"name": "description",
+				"type": "string"
+			},
+			{
+				"name": "author",
+				"type": "address"
+			},
+			{
+				"name": "activated",
+				"type": "bool"
+			},
+			{
 				"name": "pollId",
 				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "proposalId",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
-				"name": "proposalAuthor",
-				"type": "address"
 			}
 		],
-		"name": "LogProposalActivated",
-		"type": "event"
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	}
 ]
