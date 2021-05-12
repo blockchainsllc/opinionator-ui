@@ -11,7 +11,7 @@
     "bignumber.js": "^8.1.1",
     "bn.js": "^4.11.8",
     "bulma": "^0.7.5",
-    "chart.js": "^2.8.0",
+    "chart.js": "^2.9.4",
     "pdfmake": "^0.1.57",
     "rc-slider": "^8.6.13",
     "react": "^16.8.6",
